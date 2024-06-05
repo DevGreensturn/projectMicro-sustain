@@ -6,7 +6,7 @@ const energyUtilityProviderSchema = new mongoose.Schema({
     required: false,
     unique: false
   },
-  packageID: {
+  packageId: {
     type: mongoose.Types.ObjectId,
     ref:"package",
     required: false
@@ -16,7 +16,7 @@ const energyUtilityProviderSchema = new mongoose.Schema({
     ref:"project",
     required: false
   },
-  reportID: {
+  reportId: {
     type: mongoose.Types.ObjectId,
     ref:"monthlyReport",
     required: false
@@ -27,7 +27,7 @@ const energyUtilityProviderSchema = new mongoose.Schema({
   },
   energyType: {
     type: String,
-    enum: ['ELECTRICITY', 'HEATING', 'COOLING', 'STEAM'],
+    enum: ['Electricity', 'Heating', 'Cooling', 'Steam'],
   },
   meterNo: {
     type: Number,

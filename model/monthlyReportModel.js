@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
-  PackageID: {
+  packageId: {
     type: mongoose.Types.ObjectId,
     ref:"package",
     required: false
@@ -11,15 +11,15 @@ const reportSchema = new mongoose.Schema({
     ref:"project",
     required: false
   },
-  ReportingMonthYear: {
+  reportingMonthYear: {
     type: String,
     required: false
   },
-  PackagesProgressThisMonth: {
+  ReportStatusackagesProgressThisMonth: {
     type: String,
     required: false
   },
-  ManhourDuringThisMonth: {
+  manhourDuringThisMonth: {
     type: String,
     required: false
   },
@@ -27,15 +27,16 @@ const reportSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  CumulativeManhour: {
+  cumulativeManhour: {
     type: String,
     required: false
   },
-  ReportedBy: {
-    type: String,
+  reportedBy: {
+    type:  mongoose.Types.ObjectId,
+    ref:"userDetails",
     required: false
   },
-  ReportStatus: {
+  reportStatus: {
     type: String,
     enum: ['Draft', 'Submitted', 'Audited', 'Approved'],
     required: false
