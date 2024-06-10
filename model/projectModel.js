@@ -25,8 +25,7 @@ const projectSchema = new mongoose.Schema({
   },
   packageCurrentProgress: {
     type: String,
-    required: true,
-    unique: true
+    required: false
   },
   plotArea: {
     type:String,
