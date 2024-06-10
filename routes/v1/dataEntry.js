@@ -17,7 +17,7 @@ router.delete('/renewable/:id',auth.authenticateToken,dataEntry.deleteRenewable)
 // NON-RENEWABLE
 router.post('/non-renewable',auth.authenticateToken,dataEntry.createNonRenewable) 
 router.put('/non-renewable/:id',auth.authenticateToken,dataEntry.updateNonRenewable);
-router.get('/non-renewable/:id?',auth.authenticateToken,dataEntry.getNonRenewable); 
+router.get('/non-renewable/:id?',auth.authenticateToken ,dataEntry.getNonRenewable); 
 router.delete('/non-renewable/:id',auth.authenticateToken,dataEntry.deleteNonRenewable); 
 
 // SOLD

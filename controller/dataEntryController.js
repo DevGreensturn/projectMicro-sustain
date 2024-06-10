@@ -13,48 +13,67 @@ const wasteManagement = require("../model/wasteManagementModel");
 
 const createEnergyProvider = async (req, res) => {
   try {
-
     const data = new energyProvider(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Created energy entry data saved",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
+
 const getEnergyProvider = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
+
   try {
     let result;
-    if(id){
+    if (id) {
       result = await energyProvider.findById(id);
-    }else{
-      result = await energyProvider.find();
+      return res.status(200).send({
+        status: true,
+        message: "Get Data",
+        response: result,
+      });
+    } else {
+      const skip = (page - 1) * limit;
+      result = await energyProvider.find().skip(skip).limit(limit);
+      const total_count = await energyProvider.countDocuments();
+      return res.status(200).send({
+        status: true,
+        message: "Get Data with pagination",
+        response: result,
+        total_count: total_count,
+        page: page,
+        limit: limit
+      });
     }
-    return res.status(200).send({
-      status: true,
-      message: "Get Data",
-      response: result
-    });
+
   } catch (error) {
     return res.status(500).send(error.message);
   }
 };
+
 const updateEnergyProvider = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await energyProvider.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await energyProvider.findByIdAndUpdate(id, req.body, options);
+      const result = await energyProvider.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "package Data updated",
@@ -62,53 +81,58 @@ const updateEnergyProvider = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteEnergyProvider = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await energyProvider.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await energyProvider.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 const createNonRenewable = async (req, res) => {
   try {
-
     const data = new NonRenewable(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Created energy entry data saved",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getNonRenewable = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
+    if (id) {
       result = await nonRenewable.findById(id);
-    }else{
-      result = await nonRenewable.find();
+    } else {
+      const skip = (page - 1) * limit;
+      result = await nonRenewable.find().skip(skip).limit(limit);
     }
+    const total_count = await nonRenewable.countDocuments();
+
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      total_count: total_count,
+      limit: limit,
+      page: page,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -116,14 +140,18 @@ const getNonRenewable = async (req, res) => {
 };
 const updateNonRenewable = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await nonRenewable.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await nonRenewable.findByIdAndUpdate(id, req.body, options);
+      const result = await nonRenewable.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "package Data updated",
@@ -131,54 +159,58 @@ const updateNonRenewable = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteNonRenewable = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await nonRenewable.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await nonRenewable.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //renewable Energy
 const createRenewable = async (req, res) => {
   try {
-
     const data = new renwableModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getRenewable = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
+    if (id) {
       result = await renwableModel.findById(id);
-    }else{
-      result = await renwableModel.find();
+    } else {
+      const skip = (page - 1) * limit;
+      result = await renwableModel.find().skip(skip).limit(limit);
     }
+    const total_count = await renwableModel.countDocuments()
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -186,14 +218,18 @@ const getRenewable = async (req, res) => {
 };
 const updateRenewable = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await renwableModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await renwableModel.findByIdAndUpdate(id, req.body, options);
+      const result = await renwableModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -201,54 +237,58 @@ const updateRenewable = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteRenewable = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await renwableModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await renwableModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Sold
 const createSoldEnergy = async (req, res) => {
   try {
-
     const data = new soldModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getSoldEnergy = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
+    if (id) {
       result = await soldModel.findById(id);
-    }else{
-      result = await soldModel.find();
+    } else {
+      const skip = (page - 1) * limit;
+      result = await soldModel.find().skip(skip).limit(limit);
     }
+    const total_count = await soldModel.countDocuments()
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -256,12 +296,12 @@ const getSoldEnergy = async (req, res) => {
 };
 const updateSoldEnergy = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await soldModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
       const result = await soldModel.findByIdAndUpdate(id, req.body, options);
       return res.status(200).send({
@@ -271,54 +311,58 @@ const updateSoldEnergy = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteSoldEnergy = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await soldModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await soldModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Reduction
 const createReductionEnergy = async (req, res) => {
   try {
-
     const data = new reductionEnergyModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getReductionEnergy = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
+    if (id) {
       result = await reductionEnergyModel.findById(id);
-    }else{
-      result = await reductionEnergyModel.find();
+    } else {
+      const skip = (page - 1) * limit;
+      result = await reductionEnergyModel.find().skip(skip).limit(limit);
     }
+    const total_count = await reductionEnergyModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -326,14 +370,18 @@ const getReductionEnergy = async (req, res) => {
 };
 const updateReductionEnergy = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await reductionEnergyModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await reductionEnergyModel.findByIdAndUpdate(id, req.body, options);
+      const result = await reductionEnergyModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -341,53 +389,57 @@ const updateReductionEnergy = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteReductionEnergy = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await reductionEnergyModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await reductionEnergyModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 //Water Provider
 const createWaterProvider = async (req, res) => {
   try {
-
     const data = new waterProviderModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getWaterProvider = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
+    if (id) {
       result = await waterProviderModel.findById(id);
-    }else{
-      result = await waterProviderModel.find();
+    } else {
+      const skip = (page - 1) * limit;
+      result = await waterProviderModel.find().skip(skip).limit(limit);
     }
+    const total_count = await waterProviderModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -395,14 +447,18 @@ const getWaterProvider = async (req, res) => {
 };
 const updateWaterProvider = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await waterProviderModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await waterProviderModel.findByIdAndUpdate(id, req.body, options);
+      const result = await waterProviderModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -410,22 +466,20 @@ const updateWaterProvider = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteWaterProvider = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await waterProviderModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await waterProviderModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Water Bottle
