@@ -2,34 +2,46 @@ const projectModel = require("../model/projectModel");
 
 const createProject = async (req, res) => {
   try {
-
     const projects = new projectModel(req.body);
     const result = await projects.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Project Data saved",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 
 const getProjectData = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { limit, page } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 3;
+
   try {
     let result;
-    if(id){
+    if (id) {
       result = await projectModel.findById(id).populate("projectPackageId");
-    }else{
-      result = await projectModel.find().populate("projectPackageId");
+    } else {
+      const skip = (page - 1) * limit;
+      result = await projectModel
+        .find()
+        .skip(skip)
+        .limit(limit)
+        .populate("projectPackageId");
     }
+    const total_count = await projectModel.countDocuments();
+
     return res.status(200).send({
       status: true,
       message: "Project Data",
-      response: result
+      page_no: page,
+      limit: limit,
+      total_count: total_count,
+      response: result,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -38,14 +50,18 @@ const getProjectData = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findProject = await projectModel.findById(id);
     if (!findProject) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await projectModel.findByIdAndUpdate(id, req.body, options);
+      const result = await projectModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Project Data updated",
@@ -53,14 +69,12 @@ const updateProject = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 
-
 module.exports = {
   createProject,
   getProjectData,
-  updateProject
+  updateProject,
 };
