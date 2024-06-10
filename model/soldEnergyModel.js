@@ -39,7 +39,7 @@ const soldEnergySchema = new Schema({
   supportingDocument: {
     type: Buffer
   }
-});
+},{timestamps:true});
 
 const SoldEnergy = mongoose.model('SoldEnergy', soldEnergySchema);
 

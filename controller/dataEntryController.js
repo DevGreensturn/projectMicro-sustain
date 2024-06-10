@@ -4,6 +4,12 @@ const renwableModel = require("../model/renewableModel");
 const soldModel = require("../model/soldEnergyModel");
 const reductionEnergyModel = require("../model/reductionEnergyModel");
 const waterProviderModel = require("../model/utilityWaterProviderModel");
+const bottleWaterModel = require("../model/bottleWaterModel");
+const waterTankerModel = require("../model/waterTankerModel");
+const concreteMixModel = require("../model/concreteModel");
+const buildingModel = require("../model/buildingModel");
+const wasteManagement = require("../model/wasteManagementModel");
+
 
 const createEnergyProvider = async (req, res) => {
   try {
@@ -422,6 +428,420 @@ const deleteWaterProvider = async (req, res) => {
     }
 };
 
+//Water Bottle
+const createBottleWater = async (req, res) => {
+  try {
+    const data = new bottleWaterModel(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getBottleWater = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await bottleWaterModel.findById(id);
+    }else{
+      result = await bottleWaterModel.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateBottleWater = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await bottleWaterModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await bottleWaterModel.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteBottleWater = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await bottleWaterModel.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+//Water Bottle
+const createWaterTanker = async (req, res) => {
+  try {
+    const data = new waterTankerModel(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getWaterTanker = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await waterTankerModel.findById(id);
+    }else{
+      result = await waterTankerModel.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateWaterTanker = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await waterTankerModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await waterTankerModel.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteWaterTanker = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await waterTankerModel.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+//Concrete Mix
+const createConcreteMix = async (req, res) => {
+  try {
+    const data = new concreteMixModel(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getConcreteMix = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await concreteMixModel.findById(id);
+    }else{
+      result = await concreteMixModel.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateConcreteMix = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await concreteMixModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await concreteMixModel.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteConcreteMix = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await concreteMixModel.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+//Building-Materials
+const createBuilding = async (req, res) => {
+  try {
+    const data = new buildingModel(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getBuilding = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await buildingModel.findById(id);
+    }else{
+      result = await buildingModel.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateBuilding = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await buildingModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await buildingModel.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteBuilding = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await buildingModel.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+//Waste-Management
+const createWasteManagement = async (req, res) => {
+  try {
+    const data = new wasteManagement(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getWasteManagement = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await wasteManagement.findById(id);
+    }else{
+      result = await wasteManagement.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateWasteManagement = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await wasteManagement.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await wasteManagement.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteWasteManagement = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await wasteManagement.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+//Direct-Disposal
+const createDirectDisposal = async (req, res) => {
+  try {
+    const data = new wasteManagement(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getDirectDisposal = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await wasteManagement.findById(id);
+    }else{
+      result = await wasteManagement.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateDirectDisposal = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await wasteManagement.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await wasteManagement.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteDirectDisposal = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await wasteManagement.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
 
 module.exports = {
     createEnergyProvider,getEnergyProvider,updateEnergyProvider,deleteEnergyProvider,
@@ -429,5 +849,11 @@ module.exports = {
     createNonRenewable,getNonRenewable,updateNonRenewable,deleteNonRenewable,
     createSoldEnergy,getSoldEnergy,updateSoldEnergy,deleteSoldEnergy,
     createReductionEnergy,getReductionEnergy,updateReductionEnergy,deleteReductionEnergy,
-    createWaterProvider,getWaterProvider,updateWaterProvider,deleteWaterProvider
+    createWaterProvider,getWaterProvider,updateWaterProvider,deleteWaterProvider,
+    createBottleWater,getBottleWater,updateBottleWater,deleteBottleWater,
+    createWaterTanker,getWaterTanker,updateWaterTanker,deleteWaterTanker,
+    createConcreteMix,getConcreteMix,updateConcreteMix,deleteConcreteMix,
+    createBuilding,getBuilding,updateBuilding,deleteBuilding,
+    createWasteManagement,getWasteManagement,updateWasteManagement,deleteWasteManagement,
+    createDirectDisposal,getDirectDisposal,updateDirectDisposal,deleteDirectDisposal
 };

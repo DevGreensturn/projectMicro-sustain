@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const energyNonRenewableSchema = new mongoose.Schema({
   energyNonRenewableId: {
     type: Number,
-    required: true,
-    unique: true
+    required: false,
   },
   packageId: {
     type: mongoose.Types.ObjectId,
@@ -49,7 +48,8 @@ const energyNonRenewableSchema = new mongoose.Schema({
   fuelUsedByTrucks: {
     type: Number
   }
-});
+},{timestamps:true}
+);
 
 const EnergyNonRenewable = mongoose.model('EnergyNonRenewable', energyNonRenewableSchema);
 

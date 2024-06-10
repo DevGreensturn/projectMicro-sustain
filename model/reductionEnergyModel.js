@@ -4,8 +4,7 @@ const { Schema } = mongoose;
 const energyReductionSchema = new Schema({
   energyReductionID: {
     type: Number,
-    required: false,
-    unique: false
+    required: false
   },
   packageId: {
     type: mongoose.Types.ObjectId,
@@ -44,7 +43,8 @@ const energyReductionSchema = new Schema({
     type: String,
     enum: ['Estimated', 'Modeled', 'Measured']
   }
-});
+},{timestamps:true}
+);
 
 const EnergyReduction = mongoose.model('EnergyReduction', energyReductionSchema);
 

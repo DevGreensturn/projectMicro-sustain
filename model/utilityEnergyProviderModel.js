@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const energyUtilityProviderSchema = new mongoose.Schema({
   energyUtilityProviderID: {
     type: Number,
-    required: false,
-    unique: false
+    required: false
   },
   packageId: {
     type: mongoose.Types.ObjectId,

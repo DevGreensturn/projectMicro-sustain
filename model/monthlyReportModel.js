@@ -15,7 +15,7 @@ const reportSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  ReportStatusackagesProgressThisMonth: {
+  reportStatusPackagesProgressThisMonth: {
     type: String,
     required: false
   },
@@ -23,7 +23,7 @@ const reportSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  OverallPackagesProgress: {
+  overallPackagesProgress: {
     type: String,
     required: false
   },

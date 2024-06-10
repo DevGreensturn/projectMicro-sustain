@@ -1,0 +1,77 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+// Define the schema
+const concreteMixSchema = new Schema({
+  concreteMixID: {
+    type: Number,
+    required: false
+  },
+  packageId: {
+    type: mongoose.Types.ObjectId,
+    ref:"package",
+    required: false
+  },
+  projectId: {
+    type: mongoose.Types.ObjectId,
+    ref:"project",
+    required: false
+  },
+  reportId: {
+    type: mongoose.Types.ObjectId,
+    ref:"monthlyReport",
+    required: false
+  },
+  emissionInputID: {
+    type: Number,
+    required: true
+  },
+  concreteMixesNo: {
+    type: String
+  },
+  type: {
+    type: String
+  },
+  volume: {
+    type: Number
+  },
+  proportionOfTotalUsed: {
+    type: Number
+  },
+  days28Strength: {
+    type: Number
+  },
+  cementContent: {
+    type: Number
+  },
+  slagContent: {
+    type: Number
+  },
+  flyAshContent: {
+    type: Number
+  },
+  silicaFumeContent: {
+    type: Number
+  },
+  naturePozzolanContent: {
+    type: Number
+  },
+  limestoneContent: {
+    type: Number
+  },
+  embodiedGHG: {
+    type: Number
+  },
+  noOfTrips: {
+    type: Number
+  },
+  fuelUsedPerTruck: {
+    type: Number
+  }
+},{timestamps:true}
+);
+
+// Create a model using the schema
+const ConcreteMix = mongoose.model('concreteMix', concreteMixSchema);
+
+module.exports = ConcreteMix;

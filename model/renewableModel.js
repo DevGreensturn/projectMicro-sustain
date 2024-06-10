@@ -43,7 +43,8 @@ const energyRenewableSchema = new mongoose.Schema({
     enum: ['kWh', 'Joule', 'Wh'],
     required: false
   }
-});
+},{timestamps:true}
+);
 
 const EnergyRenewable = mongoose.model('EnergyRenewable', energyRenewableSchema);
 

@@ -23,16 +23,11 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  packageCurrentPackage: {
+  packageCurrentProgress: {
     type: String,
     required: true,
     unique: true
   },
-  manHours: {
-    type: String,
-    required: true
-  },
- 
   plotArea: {
     type:String,
     required: false

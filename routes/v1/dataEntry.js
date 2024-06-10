@@ -38,4 +38,41 @@ router.put('/water-provider/:id',auth.authenticateToken,dataEntry.updateWaterPro
 router.get('/water-provider/:id?',auth.authenticateToken,dataEntry.getWaterProvider); 
 router.delete('/water-provider/:id',auth.authenticateToken,dataEntry.deleteWaterProvider); 
 
+// WATER-TANKER
+router.post('/water-tanker',auth.authenticateToken,dataEntry.createWaterTanker) 
+router.put('/water-tanker/:id',auth.authenticateToken,dataEntry.updateWaterTanker);
+router.get('/water-tanker/:id?',auth.authenticateToken,dataEntry.getWaterTanker); 
+router.delete('/water-tanker/:id',auth.authenticateToken,dataEntry.deleteWaterTanker); 
+
+// WATER-BOTTLE
+router.post('/water-bottle',auth.authenticateToken,dataEntry.createBottleWater) 
+router.put('/water-bottle/:id',auth.authenticateToken,dataEntry.updateBottleWater);
+router.get('/water-bottle/:id?',auth.authenticateToken,dataEntry.getBottleWater); 
+router.delete('/water-bottle/:id',auth.authenticateToken,dataEntry.deleteBottleWater); 
+
+// CONCRETE-MIX
+router.post('/concrete',auth.authenticateToken,dataEntry.createBottleWater) 
+router.put('/concrete/:id',auth.authenticateToken,dataEntry.updateBottleWater);
+router.get('/concrete/:id?',auth.authenticateToken,dataEntry.getBottleWater); 
+router.delete('/concrete/:id',auth.authenticateToken,dataEntry.deleteBottleWater);
+
+// Building-Materials
+router.post('/building-materials',auth.authenticateToken,dataEntry.createBuilding) 
+router.put('/building-materials/:id',auth.authenticateToken,dataEntry.updateBuilding);
+router.get('/building-materials/:id?',auth.authenticateToken,dataEntry.getBuilding); 
+router.delete('/building-materials/:id',auth.authenticateToken,dataEntry.deleteBuilding); 
+
+// Waste-Managements
+router.post('/waste-managements',auth.authenticateToken,dataEntry.createWasteManagement) 
+router.put('/waste-managements/:id',auth.authenticateToken,dataEntry.updateWasteManagement);
+router.get('/waste-managements/:id?',auth.authenticateToken,dataEntry.getWasteManagement); 
+router.delete('/waste-managements/:id',auth.authenticateToken,dataEntry.deleteWasteManagement); 
+
+// Waste Direct-Disposal
+router.post('/direct-disposals',auth.authenticateToken,dataEntry.createWasteManagement) 
+router.put('/direct-disposals/:id',auth.authenticateToken,dataEntry.updateWasteManagement);
+router.get('/direct-disposals/:id?',auth.authenticateToken,dataEntry.getWasteManagement); 
+router.delete('/direct-disposals/:id',auth.authenticateToken,dataEntry.deleteWasteManagement); 
+
+
 module.exports = router;

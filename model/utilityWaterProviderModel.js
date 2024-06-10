@@ -52,7 +52,8 @@ const utilityWaterProviderSchema = new Schema({
     type: String,
     enum: ["US Gallon", "Litre", "Cubic Meter"]
   }
-});
+},{timestamps:true}
+);
 
 const WaterConsumption = mongoose.model('utilityWaterProvider', utilityWaterProviderSchema);
 
