@@ -1,21 +1,24 @@
 const mongoose = require('mongoose');
+const userDetails = require("../model/endUserModel");
+const package = require("../model/packageModel");
+const project = require("../model/projectModel");
 
 const reportSchema = new mongoose.Schema({
   packageId: {
     type: mongoose.Types.ObjectId,
-    ref:"package",
+    ref:package,
     required: false
   },
   projectId: {
     type: mongoose.Types.ObjectId,
-    ref:"project",
+    ref:project,
     required: false
   },
   reportingMonthYear: {
     type: String,
     required: false
   },
-  reportStatusPackagesProgressThisMonth: {
+  packagesProgressThisMonth: {
     type: String,
     required: false
   },
@@ -33,12 +36,12 @@ const reportSchema = new mongoose.Schema({
   },
   reportedBy: {
     type:  mongoose.Types.ObjectId,
-    ref:"userDetails",
+    ref:userDetails,
     required: false
   },
   reportStatus: {
     type: String,
-    enum: ['Draft', 'Submitted', 'Audited', 'Approved'],
+    enum: ['Draft', 'Submitted', 'Audited', 'Approved','Returned'],
     required: false
   }
 },{timestamps:true}
