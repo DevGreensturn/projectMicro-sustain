@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const monthlyReport = require("../model/monthlyReportModel");
+const package = require("../model/packageModel");
+const project = require("../model/projectModel");
 
 const energyUtilityProviderSchema = new mongoose.Schema({
   energyUtilityProviderID: {
@@ -7,17 +10,17 @@ const energyUtilityProviderSchema = new mongoose.Schema({
   },
   packageId: {
     type: mongoose.Types.ObjectId,
-    ref:"package",
+    ref:package,
     required: false
   },
   projectId: {
     type: mongoose.Types.ObjectId,
-    ref:"project",
+    ref:project,
     required: false
   },
   reportId: {
     type: mongoose.Types.ObjectId,
-    ref:"monthlyReport",
+    ref:monthlyReport,
     required: false
   },
   energyConsumptionID: {

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+const package = require("../model/packageModel");
+const project = require("../model/projectModel");
 // Define the schema
 const supplierSchema = new mongoose.Schema({
   supplierId: {
@@ -20,12 +21,12 @@ const supplierSchema = new mongoose.Schema({
   },
   packageId: {
     type: mongoose.Types.ObjectId,
-    ref:"package",
+    ref:package,
     required: false
   },
   projectId: {
     type: mongoose.Types.ObjectId,
-    ref:"project",
+    ref:project,
     required: false
   },
   roleId: {
