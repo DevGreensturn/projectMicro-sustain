@@ -37,7 +37,7 @@ const soldEnergySchema = new Schema({
   },
   unit: {
     type: String,
-    enum: ['kWh', 'Joule', 'Wh']
+    enum: ['Kwh', 'Joule', 'Wh']
   },
   supportingDocument: {
     type: Buffer

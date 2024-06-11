@@ -1309,6 +1309,36 @@ router.get('/direct-disposals/:id?', auth.authenticateToken, dataEntry.getDirect
  */
 router.delete('/direct-disposals/:id', auth.authenticateToken, dataEntry.deleteDirectDisposal);
 
+// // divert-disposals
+router.post('/divert-disposals',auth.authenticateToken,dataEntry.createDivertedDisposal) 
+router.put('/divert-disposals/:id',auth.authenticateToken,dataEntry.updateDivertedDisposal);
+router.get('/divert-disposals/:id?',auth.authenticateToken,dataEntry.getDivertedDisposal); 
+router.delete('/divert-disposals/:id',auth.authenticateToken,dataEntry.deleteDivertedDisposal); 
+
+// Worker-Transportation
+router.post('/worker-transportation',auth.authenticateToken,dataEntry.createWorkerTransportation) 
+router.put('/worker-transportation/:id',auth.authenticateToken,dataEntry.updateWorkerTransportation);
+router.get('/worker-transportation/:id?',auth.authenticateToken,dataEntry.getWorkerTransportation); 
+router.delete('/worker-transportation/:id',auth.authenticateToken,dataEntry.deleteWorkerTransportation); 
+
+// Site-Vehicle
+router.post('/site-vehicle',auth.authenticateToken,dataEntry.createSiteVehicle) 
+router.put('/site-vehicle/:id',auth.authenticateToken,dataEntry.updateSiteVehicle);
+router.get('/site-vehicle/:id?',auth.authenticateToken,dataEntry.getSiteVehicle); 
+router.delete('/site-vehicle/:id',auth.authenticateToken,dataEntry.deleteSiteVehicle); 
+
+// Business-Travel
+router.post('/business-travel',auth.authenticateToken,dataEntry.createBusinessTravel) 
+router.put('/business-travel/:id',auth.authenticateToken,dataEntry.updateBusinessTravel);
+router.get('/business-travel/:id?',auth.authenticateToken,dataEntry.getBusinessTravel); 
+router.delete('/business-travel/:id',auth.authenticateToken,dataEntry.deleteBusinessTravel); 
+
+// Employee-Commuting
+router.post('/employee-commuting',auth.authenticateToken,dataEntry.createCommuting) 
+router.put('/employee-commuting/:id',auth.authenticateToken,dataEntry.updateCommuting);
+router.get('/employee-commuting/:id?',auth.authenticateToken,dataEntry.getCommuting); 
+router.delete('/employee-commuting/:id',auth.authenticateToken,dataEntry.deleteCommuting); 
+
 module.exports = router;
 
 

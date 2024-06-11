@@ -57,7 +57,7 @@ const energyUtilityProviderSchema = new mongoose.Schema({
   },
   unit: {
     type: String,
-    enum: ['kWh', 'Joule', 'Wh']
+    enum: ['Kwh', 'Joule', 'Wh']
   },
   supportingDocuments: [{
     type: String,

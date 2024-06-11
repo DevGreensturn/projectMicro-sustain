@@ -40,7 +40,7 @@ const energyReductionSchema = new Schema({
   },
   unit: {
     type: String,
-    enum: ['kWh', 'Joule', 'Wh']
+    enum: ['Kwh', 'Joule', 'Wh']
   },
   calculationMethod: {
     type: String,

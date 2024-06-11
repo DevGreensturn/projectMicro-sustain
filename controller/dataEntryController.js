@@ -9,6 +9,12 @@ const waterTankerModel = require("../model/waterTankerModel");
 const concreteMixModel = require("../model/concreteModel");
 const buildingModel = require("../model/buildingModel");
 const wasteManagement = require("../model/wasteManagementModel");
+const divertedModel = require("../model/divertedModel");
+const disposaleModel = require("../model/directDisposalModel");
+const workerTransportationModel = require("../model/workerTransportationModel");
+const siteModel = require("../model/siteVehicleModel");
+const businessModel = require("../model/businessTravelModel");
+const commutingModel = require("../model/employeeCommutingModel");
 
 
 const createEnergyProvider = async (req, res) => {
@@ -830,7 +836,7 @@ const deleteWasteManagement = async (req, res) => {
 //Direct-Disposal
 const createDirectDisposal = async (req, res) => {
   try {
-    const data = new wasteManagement(req.body);
+    const data = new disposaleModel(req.body);
     const result = await data.save();
    
     return res.status(201).send({
@@ -848,9 +854,9 @@ const getDirectDisposal = async (req, res) => {
   try {
     let result;
     if(id){
-      result = await wasteManagement.findById(id);
+      result = await disposaleModel.findById(id);
     }else{
-      result = await wasteManagement.find();
+      result = await disposaleModel.find();
     }
     return res.status(200).send({
       status: true,
@@ -866,11 +872,11 @@ const updateDirectDisposal = async (req, res) => {
     const {id} = req.params;
 
     const options = { new: true };
-    const findData = await wasteManagement.findById(id);
+    const findData = await disposaleModel.findById(id);
     if (!findData) {
       return res.status(404).send({ message: "data not found", status: false })
     } else {
-      const result = await wasteManagement.findByIdAndUpdate(id, req.body, options);
+      const result = await disposaleModel.findByIdAndUpdate(id, req.body, options);
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -885,7 +891,7 @@ const updateDirectDisposal = async (req, res) => {
 const deleteDirectDisposal = async (req, res) => {
     try {
   const {id} = req.params;
-      const data = await wasteManagement.findByIdAndDelete(id)
+      const data = await disposaleModel.findByIdAndDelete(id)
       return res.status(201).send({
         status: true,
         message: "Data has been deleted successfully"
@@ -894,6 +900,368 @@ const deleteDirectDisposal = async (req, res) => {
       
       return res.status(500).send({ message: error.message, success: 0 });
     }
+};
+
+//Direct-Disposal
+const createDivertedDisposal = async (req, res) => {
+  try {
+    const data = new divertedModel(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getDivertedDisposal = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await divertedModel.findById(id);
+    }else{
+      result = await divertedModel.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateDivertedDisposal = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await divertedModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await divertedModel.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteDivertedDisposal = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await divertedModel.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+//Work - Transport
+const createWorkerTransportation = async (req, res) => {
+  try {
+    const data = new workerTransportationModel(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getWorkerTransportation = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await workerTransportationModel.findById(id);
+    }else{
+      result = await workerTransportationModel.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateWorkerTransportation = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await workerTransportationModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await workerTransportationModel.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteWorkerTransportation = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await workerTransportationModel.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+//Site-Vehicle
+const createSiteVehicle = async (req, res) => {
+  try {
+    const data = new siteModel(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getSiteVehicle = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await siteModel.findById(id);
+    }else{
+      result = await siteModel.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateSiteVehicle = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await siteModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await siteModel.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteSiteVehicle = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await siteModel.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+//Site-Vehicle
+const createBusinessTravel = async (req, res) => {
+  try {
+    const data = new siteModel(req.body);
+    const result = await data.save();
+   
+    return res.status(201).send({
+      status: true,
+      message: "Record has been created",
+      response: result
+    });
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+const getBusinessTravel = async (req, res) => {
+  let {id} = req.params;
+  try {
+    let result;
+    if(id){
+      result = await siteModel.findById(id);
+    }else{
+      result = await siteModel.find();
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Get Data",
+      response: result
+    });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+const updateBusinessTravel = async (req, res) => {
+  try {
+    const {id} = req.params;
+
+    const options = { new: true };
+    const findData = await siteModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false })
+    } else {
+      const result = await siteModel.findByIdAndUpdate(id, req.body, options);
+      return res.status(200).send({
+        status: true,
+        message: "Data has been updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteBusinessTravel = async (req, res) => {
+    try {
+  const {id} = req.params;
+      const data = await businessModel.findByIdAndDelete(id)
+      return res.status(201).send({
+        status: true,
+        message: "Data has been deleted successfully"
+      });
+    } catch (error) {
+      
+      return res.status(500).send({ message: error.message, success: 0 });
+    }
+};
+
+const createCommuting = async (req, res) => {
+  try {
+    const data = new commutingModel(req.body);
+    const result = await data.save();
+
+    return res.status(201).send({
+      status: true,
+      message: "Created energy entry data saved",
+      response: result,
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
+
+const getCommuting = async (req, res) => {
+  let { id } = req.params;
+  let { page, limit } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
+
+  try {
+    let result;
+    if (id) {
+      result = await commutingModel.findById(id);
+      return res.status(200).send({
+        status: true,
+        message: "Get Data",
+        response: result,
+      });
+    } else {
+      const skip = (page - 1) * limit;
+      result = await commutingModel.find().skip(skip).limit(limit);
+      const total_count = await commutingModel.countDocuments();
+      return res.status(200).send({
+        status: true,
+        message: "Get Data with pagination",
+        response: result,
+        total_count: total_count,
+        page: page,
+        limit: limit
+      });
+    }
+
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
+const updateCommuting = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const options = { new: true };
+    const findData = await commutingModel.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false });
+    } else {
+      const result = await commutingModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
+      return res.status(200).send({
+        status: true,
+        message: "package Data updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
+const deleteCommuting = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await commutingModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 
@@ -909,5 +1277,11 @@ module.exports = {
     createConcreteMix,getConcreteMix,updateConcreteMix,deleteConcreteMix,
     createBuilding,getBuilding,updateBuilding,deleteBuilding,
     createWasteManagement,getWasteManagement,updateWasteManagement,deleteWasteManagement,
-    createDirectDisposal,getDirectDisposal,updateDirectDisposal,deleteDirectDisposal
+    createDirectDisposal,getDirectDisposal,updateDirectDisposal,deleteDirectDisposal,
+    createDivertedDisposal,getDivertedDisposal,updateDivertedDisposal,deleteDivertedDisposal,
+    createWorkerTransportation,getWorkerTransportation,updateWorkerTransportation,deleteWorkerTransportation,
+    createSiteVehicle,getSiteVehicle,updateSiteVehicle,deleteSiteVehicle,
+    createBusinessTravel,getBusinessTravel,updateBusinessTravel,deleteBusinessTravel,
+    createCommuting,getCommuting,updateCommuting,deleteCommuting
+
 };

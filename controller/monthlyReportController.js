@@ -2,7 +2,7 @@ const monthlyReport = require("../model/monthlyReportModel");
 
 const getMonthlyData = async (req, res) => {
   const { id } = req.params;
-  const { projectId } = req.query;
+  const { projectId ,packageId} = req.query;
   console.log(projectId);
   try {
     let result;
@@ -19,8 +19,8 @@ const getMonthlyData = async (req, res) => {
         path: 'reportedBy',
         select: 'firstName lastName email' // Replace with the actual fields you want from the userDetails collection
       });
-    } else if(projectId) {
-      result = await monthlyReport.find({ projectId })
+    } else if(projectId || packageId) {
+      result = await monthlyReport.find({ projectId:projectId,packageId:packageId })
         .populate({
           path: 'projectId',
           select: 'projectName' // Replace with the actual fields you want from the project collection

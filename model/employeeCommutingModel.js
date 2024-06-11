@@ -3,11 +3,10 @@ const monthlyReport = require("../model/monthlyReportModel");
 const package = require("../model/packageModel");
 const project = require("../model/projectModel");
 
-const energyRenewableSchema = new mongoose.Schema({
-  energyRenewableId: {
+const employeeTransportationSchema = new mongoose.Schema({
+  employeeId: {
     type: Number,
-    required: true,
-    unique: true
+    required:false
   },
   packageId: {
     type: mongoose.Types.ObjectId,
@@ -24,31 +23,24 @@ const energyRenewableSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
-  energyConsumptionId: {
+  transportationId: {
     type: Number,
     required: true
   },
-  type: {
-    type: String,
-    enum: ['Biomass', 'Geothermal', 'Hydro', 'Solar', 'Wind'],
-    required: true
-  },
-  source: {
-    type: String,
-    required: false
-  },
-  consumption: {
+  numberOfEmployees: {
     type: Number,
     required: false
   },
-  unit: {
-    type: String,
-    enum: ['Kwh', 'Joule', 'Wh'],
+  numberOfVehicles: {
+    type: Number,
+    required: false
+  },
+  averageDistanceTravelledForVehicle: {
+    type: Number,
     required: false
   }
-},{timestamps:true}
-);
+}, { timestamps: true });
 
-const EnergyRenewable = mongoose.model('EnergyRenewable', energyRenewableSchema);
+const EmployeeTransportation = mongoose.model('EmployeeTransportation', employeeTransportationSchema);
 
-module.exports = EnergyRenewable;
+module.exports = EmployeeTransportation;
