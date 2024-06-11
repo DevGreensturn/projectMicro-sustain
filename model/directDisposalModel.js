@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const monthlyReport = require("../model/monthlyReportModel");
+const package = require("../model/packageModel");
+const project = require("../model/projectModel");
+const wasteManagement = require("../model/wasteManagementModel");
 
 const directedDisposalSchema = new mongoose.Schema({
   directedDisposalID: {
@@ -7,22 +11,22 @@ const directedDisposalSchema = new mongoose.Schema({
   },
   wasteId: {
     type: mongoose.Types.ObjectId,
-    ref:"wasteManagement",
+    ref:wasteManagement,
     required: false
   },
   packageId: {
     type: mongoose.Types.ObjectId,
-    ref:"package",
+    ref:package,
     required: false
   },
   projectId: {
     type: mongoose.Types.ObjectId,
-    ref:"project",
+    ref:project,
     required: false
   },
   reportId: {
     type: mongoose.Types.ObjectId,
-    ref:"monthlyReport",
+    ref:monthlyReport,
     required: false
   },
   directedOperationType: {

@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const monthlyReport = require("../model/monthlyReportModel");
+const package = require("../model/packageModel");
+const project = require("../model/projectModel");
+const wasteManagement = require("../model/wasteManagementModel");
 
 // Define the schema
 const DivertedDisposalSchema = new mongoose.Schema({
@@ -6,17 +10,25 @@ const DivertedDisposalSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
-  wasteID: {
-    type: Number,
-    required: true
+  wasteId: {
+    type: mongoose.Types.ObjectId,
+    ref:wasteManagement,
+    required: false
   },
-  packageID: {
-    type: Number,
-    required: true
+  packageId: {
+    type: mongoose.Types.ObjectId,
+    ref:package,
+    required: false
   },
-  reportID: {
-    type: Number,
-    required: true
+  projectId: {
+    type: mongoose.Types.ObjectId,
+    ref:project,
+    required: false
+  },
+  reportId: {
+    type: mongoose.Types.ObjectId,
+    ref:monthlyReport,
+    required: false
   },
   divertedOperationType: {
     type: String,

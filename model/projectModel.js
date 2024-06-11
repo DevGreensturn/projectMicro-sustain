@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const package = require("../model/packageModel");
 
 // Define the schema
 const projectSchema = new mongoose.Schema({
@@ -12,7 +13,7 @@ const projectSchema = new mongoose.Schema({
   },
   projectPackageId: {
     type: mongoose.Types.ObjectId,
-    ref:"package",
+    ref:package,
     required: false
   },
   mainContractor: {
