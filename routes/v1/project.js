@@ -12,44 +12,6 @@ const projects = require('../../controller/projectController');
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     Project:
- *       type: object
- *       properties:
- *         referenceNo:
- *           type: number
- *         projectName:
- *           type: string
- *         projectPackageId:
- *           type: string
- *         mainContractor:
- *           type: string
- *         topology:
- *           type: string
- *         packageCurrentPackage:
- *           type: string
- *         manHours:
- *           type: string
- *         plotArea:
- *           type: string
- *         gfa:
- *           type: string
- *         roadLength:
- *           type: string
- *         infrastructure:
- *           type: string
- *         SubscriptionCategory:
- *           type: string
- *           enum: [Building, Road, Infrastructure]
- *         subscriptionTier:
- *           type: string
- *         SustainabilityRating:
- *           type: string
- */
-
-/**
- * @swagger
  * /api/v1/projects:
  *   post:
  *     summary: Create a new project

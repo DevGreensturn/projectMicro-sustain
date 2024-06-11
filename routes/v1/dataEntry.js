@@ -75,11 +75,44 @@
 // router.delete('/direct-disposals/:id',auth.authenticateToken,dataEntry.deleteWasteManagement); 
 
 
+// divert-disposals
+// router.post('/divert-disposals',auth.authenticateToken,dataEntry.createDivertedDisposal) 
+// router.put('/divert-disposals/:id',auth.authenticateToken,dataEntry.updateDivertedDisposal);
+// router.get('/divert-disposals/:id?',auth.authenticateToken,dataEntry.getDivertedDisposal); 
+// router.delete('/divert-disposals/:id',auth.authenticateToken,dataEntry.deleteDivertedDisposal);
+
+
+
+// Site-Vehicle
+// router.post('/site-vehicle',auth.authenticateToken,dataEntry.createSiteVehicle) 
+// router.put('/site-vehicle/:id',auth.authenticateToken,dataEntry.updateSiteVehicle);
+// router.get('/site-vehicle/:id?',auth.authenticateToken,dataEntry.getSiteVehicle); 
+// router.delete('/site-vehicle/:id',auth.authenticateToken,dataEntry.deleteSiteVehicle); 
+
+// // Worker-Transportation
+// router.post('/worker-transportation',auth.authenticateToken,dataEntry.createWorkerTransportation) 
+// router.put('/worker-transportation/:id',auth.authenticateToken,dataEntry.updateWorkerTransportation);
+// router.get('/worker-transportation/:id?',auth.authenticateToken,dataEntry.getWorkerTransportation); 
+// router.delete('/worker-transportation/:id',auth.authenticateToken,dataEntry.deleteWorkerTransportation); 
+
+
+// // Business-Travel
+// router.post('/business-travel',auth.authenticateToken,dataEntry.createBusinessTravel) 
+// router.put('/business-travel/:id',auth.authenticateToken,dataEntry.updateBusinessTravel);
+// router.get('/business-travel/:id?',auth.authenticateToken,dataEntry.getBusinessTravel); 
+// router.delete('/business-travel/:id',auth.authenticateToken,dataEntry.deleteBusinessTravel); 
+
+// // Employee-Commuting
+// router.post('/employee-commuting',auth.authenticateToken,dataEntry.createCommuting) 
+// router.put('/employee-commuting/:id',auth.authenticateToken,dataEntry.updateCommuting);
+// router.get('/employee-commuting/:id?',auth.authenticateToken,dataEntry.getCommuting); 
+// router.delete('/employee-commuting/:id',auth.authenticateToken,dataEntry.deleteCommuting); 
+
+
 // module.exports = router;
 
 
 
-// routes/v1/dataEntry.js
 
 const router = require('express').Router();
 const auth = require('../../middleware/authHandler');
@@ -1105,8 +1138,6 @@ router.get('/building-materials/:id?', auth.authenticateToken, dataEntry.getBuil
 router.delete('/building-materials/:id', auth.authenticateToken, dataEntry.deleteBuilding);
 
 
-
-
 // WASTE-MANAGEMENTS
 /**
  * @swagger
@@ -1309,36 +1340,509 @@ router.get('/direct-disposals/:id?', auth.authenticateToken, dataEntry.getDirect
  */
 router.delete('/direct-disposals/:id', auth.authenticateToken, dataEntry.deleteDirectDisposal);
 
-// // divert-disposals
-router.post('/divert-disposals',auth.authenticateToken,dataEntry.createDivertedDisposal) 
-router.put('/divert-disposals/:id',auth.authenticateToken,dataEntry.updateDivertedDisposal);
-router.get('/divert-disposals/:id?',auth.authenticateToken,dataEntry.getDivertedDisposal); 
-router.delete('/divert-disposals/:id',auth.authenticateToken,dataEntry.deleteDivertedDisposal); 
-
-// Worker-Transportation
-router.post('/worker-transportation',auth.authenticateToken,dataEntry.createWorkerTransportation) 
-router.put('/worker-transportation/:id',auth.authenticateToken,dataEntry.updateWorkerTransportation);
-router.get('/worker-transportation/:id?',auth.authenticateToken,dataEntry.getWorkerTransportation); 
-router.delete('/worker-transportation/:id',auth.authenticateToken,dataEntry.deleteWorkerTransportation); 
-
-// Site-Vehicle
-router.post('/site-vehicle',auth.authenticateToken,dataEntry.createSiteVehicle) 
-router.put('/site-vehicle/:id',auth.authenticateToken,dataEntry.updateSiteVehicle);
-router.get('/site-vehicle/:id?',auth.authenticateToken,dataEntry.getSiteVehicle); 
-router.delete('/site-vehicle/:id',auth.authenticateToken,dataEntry.deleteSiteVehicle); 
-
-// Business-Travel
-router.post('/business-travel',auth.authenticateToken,dataEntry.createBusinessTravel) 
-router.put('/business-travel/:id',auth.authenticateToken,dataEntry.updateBusinessTravel);
-router.get('/business-travel/:id?',auth.authenticateToken,dataEntry.getBusinessTravel); 
-router.delete('/business-travel/:id',auth.authenticateToken,dataEntry.deleteBusinessTravel); 
-
-// Employee-Commuting
-router.post('/employee-commuting',auth.authenticateToken,dataEntry.createCommuting) 
-router.put('/employee-commuting/:id',auth.authenticateToken,dataEntry.updateCommuting);
-router.get('/employee-commuting/:id?',auth.authenticateToken,dataEntry.getCommuting); 
-router.delete('/employee-commuting/:id',auth.authenticateToken,dataEntry.deleteCommuting); 
-
-module.exports = router;
 
 
+// DIVERT DISPOSAL
+/**
+ * @swagger
+ * /api/v1/data-entry/divert-disposals:
+ *   post:
+ *     summary: Create a new diverted disposal
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/DivertedDisposal'
+ *     responses:
+ *       201:
+ *         description: Diverted disposal created successfully
+ *       500:
+ *         description: Server error
+ */
+router.post('/divert-disposals', auth.authenticateToken, dataEntry.createDivertedDisposal);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/divert-disposals/{id}:
+ *   put:
+ *     summary: Update a diverted disposal
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Diverted disposal ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/DivertedDisposal'
+ *     responses:
+ *       200:
+ *         description: Diverted disposal updated successfully
+ *       404:
+ *         description: Diverted disposal not found
+ *       500:
+ *         description: Server error
+ */
+router.put('/divert-disposals/:id', auth.authenticateToken, dataEntry.updateDivertedDisposal);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/divert-disposals/{id}:
+ *   get:
+ *     summary: Get diverted disposal data by ID or all diverted disposals
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: Diverted disposal ID
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *       500:
+ *         description: Server error
+ */
+router.get('/divert-disposals/:id?', auth.authenticateToken, dataEntry.getDivertedDisposal);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/divert-disposals/{id}:
+ *   delete:
+ *     summary: Delete a diverted disposal
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Diverted disposal ID
+ *     responses:
+ *       200:
+ *         description: Diverted disposal deleted successfully
+ *       404:
+ *         description: Diverted disposal not found
+ *       500:
+ *         description: Server error
+ */
+router.delete('/divert-disposals/:id', auth.authenticateToken, dataEntry.deleteDivertedDisposal);
+
+// SITE VEHICLE
+/**
+ * @swagger
+ * /api/v1/data-entry/site-vehicle:
+ *   post:
+ *     summary: Create a new site vehicle
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SiteVehicle'
+ *     responses:
+ *       201:
+ *         description: Site vehicle created successfully
+ *       500:
+ *         description: Server error
+ */
+router.post('/site-vehicle', auth.authenticateToken, dataEntry.createSiteVehicle);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/site-vehicle/{id}:
+ *   put:
+ *     summary: Update a site vehicle
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Site vehicle ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SiteVehicle'
+ *     responses:
+ *       200:
+ *         description: Site vehicle updated successfully
+ *       404:
+ *         description: Site vehicle not found
+ *       500:
+ *         description: Server error
+ */
+router.put('/site-vehicle/:id', auth.authenticateToken, dataEntry.updateSiteVehicle);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/site-vehicle/{id}:
+ *   get:
+ *     summary: Get site vehicle data by ID or all site vehicles
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: Site vehicle ID
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *       500:
+ *         description: Server error
+ */
+router.get('/site-vehicle/:id?', auth.authenticateToken, dataEntry.getSiteVehicle);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/site-vehicle/{id}:
+ *   delete:
+ *     summary: Delete a site vehicle
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Site vehicle ID
+ *     responses:
+ *       200:
+ *         description: Site vehicle deleted successfully
+ *       404:
+ *         description: Site vehicle not found
+ *       500:
+ *         description: Server error
+ */
+router.delete('/site-vehicle/:id', auth.authenticateToken, dataEntry.deleteSiteVehicle);
+
+// WORKER TRANSPORTATION
+/**
+* @swagger
+* /api/v1/data-entry/worker-transportation:
+*   post:
+*     summary: Create a new worker transportation entry
+*     tags: [Data Entry]
+*     security:
+*       - bearerAuth: []
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/WorkerTransportation'
+*     responses:
+*       201:
+*         description: Worker transportation entry created successfully
+*       500:
+*         description: Server error
+*/
+router.post('/worker-transportation', auth.authenticateToken, dataEntry.createWorkerTransportation);
+
+/**
+* @swagger
+* /api/v1/data-entry/worker-transportation/{id}:
+*   put:
+*     summary: Update a worker transportation entry
+*     tags: [Data Entry]
+*     security:
+*       - bearerAuth: []
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         schema:
+*           type: string
+*         description: Worker transportation entry ID
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/WorkerTransportation'
+*     responses:
+*       200:
+*         description: Worker transportation entry updated successfully
+*       404:
+*         description: Worker transportation entry not found
+*       500:
+*         description: Server error
+*/
+router.put('/worker-transportation/:id', auth.authenticateToken, dataEntry.updateWorkerTransportation);
+
+/**
+* @swagger
+* /api/v1/data-entry/worker-transportation/{id}:
+*   get:
+*     summary: Get worker transportation entry by ID or all entries
+*     tags: [Data Entry]
+*     security:
+*       - bearerAuth: []
+*     parameters:
+*       - in: path
+*         name: id
+*         schema:
+*           type: string
+*         description: Worker transportation entry ID
+*     responses:
+*       200:
+*         description: Successful response
+*       500:
+*         description: Server error
+*/
+router.get('/worker-transportation/:id?', auth.authenticateToken, dataEntry.getWorkerTransportation);
+
+/**
+* @swagger
+* /api/v1/data-entry/worker-transportation/{id}:
+*   delete:
+*     summary: Delete a worker transportation entry
+*     tags: [Data Entry]
+*     security:
+*       - bearerAuth: []
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         schema:
+*           type: string
+*         description: Worker transportation entry ID
+*     responses:
+*       200:
+*         description: Worker transportation entry deleted successfully
+*       404:
+*         description: Worker transportation entry not found
+*       500:
+*         description: Server error
+*/
+router.delete('/worker-transportation/:id', auth.authenticateToken, dataEntry.deleteWorkerTransportation);
+
+// BUSINESS TRAVEL
+/**
+* @swagger
+* /api/v1/data-entry/business-travel:
+*   post:
+*     summary: Create a new business travel entry
+*     tags: [Data Entry]
+*     security:
+*       - bearerAuth: []
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/BusinessTravel'
+*     responses:
+*       201:
+*         description: Business travel entry created successfully
+*       500:
+*         description: Server error
+*/
+router.post('/business-travel', auth.authenticateToken, dataEntry.createBusinessTravel);
+
+/**
+* @swagger
+* /api/v1/data-entry/business-travel/{id}:
+*   put:
+*     summary: Update a business travel entry
+*     tags: [Data Entry]
+*     security:
+*       - bearerAuth: []
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         schema:
+*           type: string
+*         description: Business travel entry ID
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/BusinessTravel'
+*     responses:
+*       200:
+*         description: Business travel entry updated successfully
+*       404:
+*         description: Business travel entry not found
+*       500:
+*         description: Server error
+*/
+router.put('/business-travel/:id', auth.authenticateToken, dataEntry.updateBusinessTravel);
+
+/**
+* @swagger
+* /api/v1/data-entry/business-travel/{id}:
+*   get:
+*     summary: Get business travel entry by ID or all entries
+*     tags: [Data Entry]
+*     security:
+*       - bearerAuth: []
+*     parameters:
+*       - in: path
+*         name: id
+*         schema:
+*           type: string
+*         description: Business travel entry ID
+*     responses:
+*       200:
+*         description: Successful response
+*       500:
+*         description: Server error
+*/
+router.get('/business-travel/:id?', auth.authenticateToken, dataEntry.getBusinessTravel);
+
+/**
+* @swagger
+* /api/v1/data-entry/business-travel/{id}:
+*   delete:
+*     summary: Delete a business travel entry
+*     tags: [Data Entry]
+*     security:
+*       - bearerAuth: []
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         schema:
+*           type: string
+*         description: Business travel entry ID
+*     responses:
+*       200:
+*         description: Business travel entry deleted successfully
+*       404:
+*         description: Business travel entry not found
+*       500:
+*         description: Server error
+*/
+router.delete('/business-travel/:id', auth.authenticateToken, dataEntry.deleteBusinessTravel);
+
+// EMPLOYEE-COMMUTING
+/**
+ * @swagger
+ * /api/v1/data-entry/employee-commuting:
+ *   post:
+ *     summary: Create a new employee commuting entry
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/EmployeeCommuting'
+ *     responses:
+ *       201:
+ *         description: Employee commuting entry created successfully
+ *       500:
+ *         description: Server error
+ */
+router.post('/employee-commuting', auth.authenticateToken, dataEntry.createCommuting);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/employee-commuting/{id}:
+ *   put:
+ *     summary: Update an employee commuting entry
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Employee commuting entry ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/EmployeeCommuting'
+ *     responses:
+ *       200:
+ *         description: Employee commuting entry updated successfully
+ *       404:
+ *         description: Employee commuting entry not found
+ *       500:
+ *         description: Server error
+ */
+router.put('/employee-commuting/:id', auth.authenticateToken, dataEntry.updateCommuting);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/employee-commuting/{id}:
+ *   get:
+ *     summary: Get employee commuting entry by ID or all entries
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: Employee commuting entry ID
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *       500:
+ *         description: Server error
+ */
+router.get('/employee-commuting/:id?', auth.authenticateToken, dataEntry.getCommuting);
+
+/**
+ * @swagger
+ * /api/v1/data-entry/employee-commuting/{id}:
+ *   delete:
+ *     summary: Delete an employee commuting entry
+ *     tags: [Data Entry]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Employee commuting entry ID
+ *     responses:
+ *       200:
+ *         description: Employee commuting entry deleted successfully
+ *       404:
+ *         description: Employee commuting entry not found
+ *       500:
+ *         description: Server error
+ */
+router.delete('/employee-commuting/:id', auth.authenticateToken, dataEntry.deleteCommuting);
