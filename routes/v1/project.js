@@ -50,7 +50,7 @@ router.post("/", auth.authenticateToken, projects.createProject);
  *         name: limit
  *         schema:
  *           type: integer
- *           default: 3
+ *           default: 10
  *         description: Number of projects per page
  *       - in: query
  *         name: page

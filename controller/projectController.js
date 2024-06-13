@@ -15,25 +15,34 @@ const createProject = async (req, res) => {
   }
 };
 
+
 const getProjectData = async (req, res) => {
   let { id } = req.params;
-  let { limit, page } = req.query;
+  let { limit, page, projectPackageId } = req.query;
   page = page ? parseInt(page) : 1;
-  limit = limit ? parseInt(limit) : 3;
+  limit = limit ? parseInt(limit) : 10;
 
   try {
     let result;
+    const query = {};
+
+    // Check if projectPackageId is provided in query parameters
+    if (projectPackageId) {
+      query.projectPackageId = projectPackageId;
+    }
+
     if (id) {
       result = await projectModel.findById(id).populate("projectPackageId");
     } else {
       const skip = (page - 1) * limit;
       result = await projectModel
-        .find()
+        .find(query)  // Apply the query here
         .skip(skip)
         .limit(limit)
         .populate("projectPackageId");
     }
-    const total_count = await projectModel.countDocuments();
+
+    const total_count = await projectModel.countDocuments(query);
 
     return res.status(200).send({
       status: true,
@@ -47,6 +56,7 @@ const getProjectData = async (req, res) => {
     return res.status(500).send(error.message);
   }
 };
+
 
 const updateProject = async (req, res) => {
   try {

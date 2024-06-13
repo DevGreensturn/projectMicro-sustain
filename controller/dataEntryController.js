@@ -16,7 +16,6 @@ const siteModel = require("../model/siteVehicleModel");
 const businessModel = require("../model/businessTravelModel");
 const commutingModel = require("../model/employeeCommutingModel");
 
-
 const createEnergyProvider = async (req, res) => {
   try {
     const data = new energyProvider(req.body);
@@ -34,12 +33,18 @@ const createEnergyProvider = async (req, res) => {
 
 const getEnergyProvider = async (req, res) => {
   let { id } = req.params;
-  let { page, limit } = req.query;
+  let { page, limit, projectId } = req.query;
   page = page ? parseInt(page) : 1;
   limit = limit ? parseInt(limit) : 10;
 
   try {
     let result;
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
+    }
     if (id) {
       result = await energyProvider.findById(id);
       return res.status(200).send({
@@ -49,7 +54,7 @@ const getEnergyProvider = async (req, res) => {
       });
     } else {
       const skip = (page - 1) * limit;
-      result = await energyProvider.find().skip(skip).limit(limit);
+      result = await energyProvider.find(query).skip(skip).limit(limit);
       const total_count = await energyProvider.countDocuments();
       return res.status(200).send({
         status: true,
@@ -57,10 +62,9 @@ const getEnergyProvider = async (req, res) => {
         response: result,
         total_count: total_count,
         page: page,
-        limit: limit
+        limit: limit,
       });
     }
-
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -119,16 +123,22 @@ const createNonRenewable = async (req, res) => {
 };
 const getNonRenewable = async (req, res) => {
   let { id } = req.params;
-  let { page, limit } = req.query;
+  let { page, limit, projectId } = req.query;
   page = page ? parseInt(page) : 1;
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
+    }
     if (id) {
       result = await nonRenewable.findById(id);
     } else {
       const skip = (page - 1) * limit;
-      result = await nonRenewable.find().skip(skip).limit(limit);
+      result = await nonRenewable.find(query).skip(skip).limit(limit);
     }
     const total_count = await nonRenewable.countDocuments();
 
@@ -203,20 +213,27 @@ const getRenewable = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
+
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
+    }
     if (id) {
       result = await renwableModel.findById(id);
     } else {
       const skip = (page - 1) * limit;
-      result = await renwableModel.find().skip(skip).limit(limit);
+      result = await renwableModel.find(query).skip(skip).limit(limit);
     }
-    const total_count = await renwableModel.countDocuments()
+    const total_count = await renwableModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
       response: result,
       limit: limit,
       page: page,
-      total_count: total_count
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -276,18 +293,25 @@ const createSoldEnergy = async (req, res) => {
 };
 const getSoldEnergy = async (req, res) => {
   let { id } = req.params;
-  let { page, limit } = req.query;
+  let { page, limit, projectId } = req.query;
   page = page ? parseInt(page) : 1;
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
+
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
+    }
     if (id) {
       result = await soldModel.findById(id);
     } else {
       const skip = (page - 1) * limit;
-      result = await soldModel.find().skip(skip).limit(limit);
+      result = await soldModel.find(query).skip(skip).limit(limit);
     }
-    const total_count = await soldModel.countDocuments()
+    const total_count = await soldModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
@@ -350,16 +374,22 @@ const createReductionEnergy = async (req, res) => {
 };
 const getReductionEnergy = async (req, res) => {
   let { id } = req.params;
-  let { page, limit } = req.query;
+  let { page, limit, projectId } = req.query;
   page = page ? parseInt(page) : 1;
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
+    }
     if (id) {
       result = await reductionEnergyModel.findById(id);
     } else {
       const skip = (page - 1) * limit;
-      result = await reductionEnergyModel.find().skip(skip).limit(limit);
+      result = await reductionEnergyModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await reductionEnergyModel.countDocuments();
     return res.status(200).send({
@@ -368,7 +398,7 @@ const getReductionEnergy = async (req, res) => {
       response: result,
       limit: limit,
       page: page,
-      total_count: total_count
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -427,16 +457,22 @@ const createWaterProvider = async (req, res) => {
 };
 const getWaterProvider = async (req, res) => {
   let { id } = req.params;
-  let { page, limit } = req.query;
+  let { page, limit, projectId } = req.query;
   page = page ? parseInt(page) : 1;
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
+    }
     if (id) {
       result = await waterProviderModel.findById(id);
     } else {
       const skip = (page - 1) * limit;
-      result = await waterProviderModel.find().skip(skip).limit(limit);
+      result = await waterProviderModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await waterProviderModel.countDocuments();
     return res.status(200).send({
@@ -445,7 +481,7 @@ const getWaterProvider = async (req, res) => {
       response: result,
       limit: limit,
       page: page,
-      total_count: total_count
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -493,30 +529,44 @@ const createBottleWater = async (req, res) => {
   try {
     const data = new bottleWaterModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getBottleWater = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
-      result = await bottleWaterModel.findById(id);
-    }else{
-      result = await bottleWaterModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await bottleWaterModel.findById(id);
+    } else {
+      const skip = (page - 1) * limit;
+      result = await bottleWaterModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await bottleWaterModel.countDocuments();
+
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -524,14 +574,18 @@ const getBottleWater = async (req, res) => {
 };
 const updateBottleWater = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await bottleWaterModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await bottleWaterModel.findByIdAndUpdate(id, req.body, options);
+      const result = await bottleWaterModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -539,22 +593,20 @@ const updateBottleWater = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteBottleWater = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await bottleWaterModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await bottleWaterModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Water Bottle
@@ -562,30 +614,43 @@ const createWaterTanker = async (req, res) => {
   try {
     const data = new waterTankerModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getWaterTanker = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
-      result = await waterTankerModel.findById(id);
-    }else{
-      result = await waterTankerModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await waterTankerModel.findById(id);
+    } else {
+      const skip = (page - 1) * limit;
+      result = await waterTankerModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await waterTankerModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -593,14 +658,18 @@ const getWaterTanker = async (req, res) => {
 };
 const updateWaterTanker = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await waterTankerModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await waterTankerModel.findByIdAndUpdate(id, req.body, options);
+      const result = await waterTankerModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -608,22 +677,20 @@ const updateWaterTanker = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteWaterTanker = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await waterTankerModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await waterTankerModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Concrete Mix
@@ -631,30 +698,42 @@ const createConcreteMix = async (req, res) => {
   try {
     const data = new concreteMixModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getConcreteMix = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
-      result = await concreteMixModel.findById(id);
-    }else{
-      result = await concreteMixModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await concreteMixModel.findById(id);
+    } else {
+      result = await concreteMixModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await concreteMixModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -662,14 +741,18 @@ const getConcreteMix = async (req, res) => {
 };
 const updateConcreteMix = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await concreteMixModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await concreteMixModel.findByIdAndUpdate(id, req.body, options);
+      const result = await concreteMixModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -677,22 +760,20 @@ const updateConcreteMix = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteConcreteMix = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await concreteMixModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await concreteMixModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Building-Materials
@@ -700,30 +781,42 @@ const createBuilding = async (req, res) => {
   try {
     const data = new buildingModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getBuilding = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
-      result = await buildingModel.findById(id);
-    }else{
-      result = await buildingModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await buildingModel.findById(id);
+    } else {
+      result = await buildingModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await buildingModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -731,14 +824,18 @@ const getBuilding = async (req, res) => {
 };
 const updateBuilding = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await buildingModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await buildingModel.findByIdAndUpdate(id, req.body, options);
+      const result = await buildingModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -746,22 +843,20 @@ const updateBuilding = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteBuilding = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await buildingModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await buildingModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Waste-Management
@@ -769,30 +864,42 @@ const createWasteManagement = async (req, res) => {
   try {
     const data = new wasteManagement(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getWasteManagement = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
-      result = await wasteManagement.findById(id);
-    }else{
-      result = await wasteManagement.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await wasteManagement.findById(id);
+    } else {
+      result = await wasteManagement.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await wasteManagement.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -800,14 +907,18 @@ const getWasteManagement = async (req, res) => {
 };
 const updateWasteManagement = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await wasteManagement.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await wasteManagement.findByIdAndUpdate(id, req.body, options);
+      const result = await wasteManagement.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -815,22 +926,20 @@ const updateWasteManagement = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteWasteManagement = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await wasteManagement.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await wasteManagement.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Direct-Disposal
@@ -838,30 +947,43 @@ const createDirectDisposal = async (req, res) => {
   try {
     const data = new disposaleModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getDirectDisposal = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
+  
   try {
     let result;
-    if(id){
-      result = await disposaleModel.findById(id);
-    }else{
-      result = await disposaleModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await disposaleModel.findById(id);
+    } else {
+      result = await disposaleModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await disposaleModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -869,14 +991,18 @@ const getDirectDisposal = async (req, res) => {
 };
 const updateDirectDisposal = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await disposaleModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await disposaleModel.findByIdAndUpdate(id, req.body, options);
+      const result = await disposaleModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -884,22 +1010,20 @@ const updateDirectDisposal = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteDirectDisposal = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await disposaleModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await disposaleModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Direct-Disposal
@@ -907,30 +1031,42 @@ const createDivertedDisposal = async (req, res) => {
   try {
     const data = new divertedModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getDivertedDisposal = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
-      result = await divertedModel.findById(id);
-    }else{
-      result = await divertedModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await divertedModel.findById(id);
+    } else {
+      result = await divertedModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await divertedModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -938,14 +1074,18 @@ const getDivertedDisposal = async (req, res) => {
 };
 const updateDivertedDisposal = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await divertedModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await divertedModel.findByIdAndUpdate(id, req.body, options);
+      const result = await divertedModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -953,22 +1093,20 @@ const updateDivertedDisposal = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteDivertedDisposal = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await divertedModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await divertedModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Work - Transport
@@ -976,30 +1114,43 @@ const createWorkerTransportation = async (req, res) => {
   try {
     const data = new workerTransportationModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getWorkerTransportation = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
+  
   try {
     let result;
-    if(id){
-      result = await workerTransportationModel.findById(id);
-    }else{
-      result = await workerTransportationModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await workerTransportationModel.findById(id);
+    } else {
+      result = await workerTransportationModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await workerTransportationModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -1007,14 +1158,18 @@ const getWorkerTransportation = async (req, res) => {
 };
 const updateWorkerTransportation = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await workerTransportationModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await workerTransportationModel.findByIdAndUpdate(id, req.body, options);
+      const result = await workerTransportationModel.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
       return res.status(200).send({
         status: true,
         message: "Data has been updated",
@@ -1022,22 +1177,20 @@ const updateWorkerTransportation = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteWorkerTransportation = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await workerTransportationModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await workerTransportationModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Site-Vehicle
@@ -1045,30 +1198,42 @@ const createSiteVehicle = async (req, res) => {
   try {
     const data = new siteModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getSiteVehicle = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
-      result = await siteModel.findById(id);
-    }else{
-      result = await siteModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await siteModel.findById(id);
+    } else {
+      result = await siteModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await siteModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -1076,12 +1241,12 @@ const getSiteVehicle = async (req, res) => {
 };
 const updateSiteVehicle = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await siteModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
       const result = await siteModel.findByIdAndUpdate(id, req.body, options);
       return res.status(200).send({
@@ -1091,22 +1256,20 @@ const updateSiteVehicle = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteSiteVehicle = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await siteModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await siteModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 //Site-Vehicle
@@ -1114,30 +1277,42 @@ const createBusinessTravel = async (req, res) => {
   try {
     const data = new siteModel(req.body);
     const result = await data.save();
-   
+
     return res.status(201).send({
       status: true,
       message: "Record has been created",
-      response: result
+      response: result,
     });
   } catch (error) {
-    
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
 const getBusinessTravel = async (req, res) => {
-  let {id} = req.params;
+  let { id } = req.params;
+  let { page, limit, projectId } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    if(id){
-      result = await siteModel.findById(id);
-    }else{
-      result = await siteModel.find();
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
     }
+    if (id) {
+      result = await siteModel.findById(id);
+    } else {
+      result = await siteModel.find(query).skip(skip).limit(limit);
+    }
+    const total_count = await siteModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
-      response: result
+      response: result,
+      limit: limit,
+      page: page,
+      total_count: total_count,
     });
   } catch (error) {
     return res.status(500).send(error.message);
@@ -1145,12 +1320,12 @@ const getBusinessTravel = async (req, res) => {
 };
 const updateBusinessTravel = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const options = { new: true };
     const findData = await siteModel.findById(id);
     if (!findData) {
-      return res.status(404).send({ message: "data not found", status: false })
+      return res.status(404).send({ message: "data not found", status: false });
     } else {
       const result = await siteModel.findByIdAndUpdate(id, req.body, options);
       return res.status(200).send({
@@ -1160,22 +1335,20 @@ const updateBusinessTravel = async (req, res) => {
       });
     }
   } catch (error) {
-    
     return res.status(500).send({ message: error.message });
   }
 };
 const deleteBusinessTravel = async (req, res) => {
-    try {
-  const {id} = req.params;
-      const data = await businessModel.findByIdAndDelete(id)
-      return res.status(201).send({
-        status: true,
-        message: "Data has been deleted successfully"
-      });
-    } catch (error) {
-      
-      return res.status(500).send({ message: error.message, success: 0 });
-    }
+  try {
+    const { id } = req.params;
+    const data = await businessModel.findByIdAndDelete(id);
+    return res.status(201).send({
+      status: true,
+      message: "Data has been deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
 };
 
 const createCommuting = async (req, res) => {
@@ -1195,12 +1368,18 @@ const createCommuting = async (req, res) => {
 
 const getCommuting = async (req, res) => {
   let { id } = req.params;
-  let { page, limit } = req.query;
+  let { page, limit, projectId } = req.query;
   page = page ? parseInt(page) : 1;
   limit = limit ? parseInt(limit) : 10;
 
   try {
     let result;
+    const query = {};
+
+    // Check if projectId is provided in query parameters
+    if (projectId) {
+      query.projectId = projectId;
+    }
     if (id) {
       result = await commutingModel.findById(id);
       return res.status(200).send({
@@ -1210,7 +1389,7 @@ const getCommuting = async (req, res) => {
       });
     } else {
       const skip = (page - 1) * limit;
-      result = await commutingModel.find().skip(skip).limit(limit);
+      result = await commutingModel.find(query).skip(skip).limit(limit);
       const total_count = await commutingModel.countDocuments();
       return res.status(200).send({
         status: true,
@@ -1218,10 +1397,9 @@ const getCommuting = async (req, res) => {
         response: result,
         total_count: total_count,
         page: page,
-        limit: limit
+        limit: limit,
       });
     }
-
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -1264,24 +1442,73 @@ const deleteCommuting = async (req, res) => {
   }
 };
 
-
 module.exports = {
-    createEnergyProvider,getEnergyProvider,updateEnergyProvider,deleteEnergyProvider,
-    createRenewable,getRenewable,updateRenewable,deleteRenewable,
-    createNonRenewable,getNonRenewable,updateNonRenewable,deleteNonRenewable,
-    createSoldEnergy,getSoldEnergy,updateSoldEnergy,deleteSoldEnergy,
-    createReductionEnergy,getReductionEnergy,updateReductionEnergy,deleteReductionEnergy,
-    createWaterProvider,getWaterProvider,updateWaterProvider,deleteWaterProvider,
-    createBottleWater,getBottleWater,updateBottleWater,deleteBottleWater,
-    createWaterTanker,getWaterTanker,updateWaterTanker,deleteWaterTanker,
-    createConcreteMix,getConcreteMix,updateConcreteMix,deleteConcreteMix,
-    createBuilding,getBuilding,updateBuilding,deleteBuilding,
-    createWasteManagement,getWasteManagement,updateWasteManagement,deleteWasteManagement,
-    createDirectDisposal,getDirectDisposal,updateDirectDisposal,deleteDirectDisposal,
-    createDivertedDisposal,getDivertedDisposal,updateDivertedDisposal,deleteDivertedDisposal,
-    createWorkerTransportation,getWorkerTransportation,updateWorkerTransportation,deleteWorkerTransportation,
-    createSiteVehicle,getSiteVehicle,updateSiteVehicle,deleteSiteVehicle,
-    createBusinessTravel,getBusinessTravel,updateBusinessTravel,deleteBusinessTravel,
-    createCommuting,getCommuting,updateCommuting,deleteCommuting
-
+  createEnergyProvider,
+  getEnergyProvider,
+  updateEnergyProvider,
+  deleteEnergyProvider,
+  createRenewable,
+  getRenewable,
+  updateRenewable,
+  deleteRenewable,
+  createNonRenewable,
+  getNonRenewable,
+  updateNonRenewable,
+  deleteNonRenewable,
+  createSoldEnergy,
+  getSoldEnergy,
+  updateSoldEnergy,
+  deleteSoldEnergy,
+  createReductionEnergy,
+  getReductionEnergy,
+  updateReductionEnergy,
+  deleteReductionEnergy,
+  createWaterProvider,
+  getWaterProvider,
+  updateWaterProvider,
+  deleteWaterProvider,
+  createBottleWater,
+  getBottleWater,
+  updateBottleWater,
+  deleteBottleWater,
+  createWaterTanker,
+  getWaterTanker,
+  updateWaterTanker,
+  deleteWaterTanker,
+  createConcreteMix,
+  getConcreteMix,
+  updateConcreteMix,
+  deleteConcreteMix,
+  createBuilding,
+  getBuilding,
+  updateBuilding,
+  deleteBuilding,
+  createWasteManagement,
+  getWasteManagement,
+  updateWasteManagement,
+  deleteWasteManagement,
+  createDirectDisposal,
+  getDirectDisposal,
+  updateDirectDisposal,
+  deleteDirectDisposal,
+  createDivertedDisposal,
+  getDivertedDisposal,
+  updateDivertedDisposal,
+  deleteDivertedDisposal,
+  createWorkerTransportation,
+  getWorkerTransportation,
+  updateWorkerTransportation,
+  deleteWorkerTransportation,
+  createSiteVehicle,
+  getSiteVehicle,
+  updateSiteVehicle,
+  deleteSiteVehicle,
+  createBusinessTravel,
+  getBusinessTravel,
+  updateBusinessTravel,
+  deleteBusinessTravel,
+  createCommuting,
+  getCommuting,
+  updateCommuting,
+  deleteCommuting,
 };
