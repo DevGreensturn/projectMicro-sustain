@@ -145,7 +145,7 @@ const dataEntry = require('../../controller/dataEntryController');
  *       500:
  *         description: Server error
  */
-router.post('/energy/', dataEntry.createEnergyProvider);
+router.post('/energy/', auth.authenticateToken, dataEntry.createEnergyProvider);
 
 /**
  * @swagger
@@ -196,7 +196,7 @@ router.put('/energy/:id', auth.authenticateToken, dataEntry.updateEnergyProvider
  *       500:
  *         description: Server error
  */
-router.get('/energy/:id?', dataEntry.getEnergyProvider);
+router.get('/energy/:id?', auth.authenticateToken, dataEntry.getEnergyProvider);
 
 /**
  * @swagger
@@ -1846,3 +1846,10 @@ router.get('/employee-commuting/:id?', auth.authenticateToken, dataEntry.getComm
  *         description: Server error
  */
 router.delete('/employee-commuting/:id', auth.authenticateToken, dataEntry.deleteCommuting);
+
+
+
+
+
+
+module.exports = router;
