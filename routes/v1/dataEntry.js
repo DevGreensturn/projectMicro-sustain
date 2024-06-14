@@ -1,119 +1,3 @@
-// const router = require('express').Router();
-// const auth = require('../../middleware/authHandler');
-// const dataEntry = require('../../controller/dataEntryController');
-
-// // ENERGY
-// router.post('/energy/',dataEntry.createEnergyProvider) 
-// router.put('/energy/:id',auth.authenticateToken,dataEntry.updateEnergyProvider);
-// router.get('/energy/:id?',dataEntry.getEnergyProvider); 
-// router.delete('/energy/:id',dataEntry.deleteEnergyProvider); 
-
-// // RENEWABLE
-// router.post('/renewable/',auth.authenticateToken,dataEntry.createRenewable) 
-// router.put('/renewable/:id',auth.authenticateToken,dataEntry.updateRenewable);
-// router.get('/renewable/:id?',auth.authenticateToken,dataEntry.getRenewable); 
-// router.delete('/renewable/:id',auth.authenticateToken,dataEntry.deleteRenewable); 
-
-// // NON-RENEWABLE
-// router.post('/non-renewable',auth.authenticateToken,dataEntry.createNonRenewable) 
-// router.put('/non-renewable/:id',auth.authenticateToken,dataEntry.updateNonRenewable);
-// router.get('/non-renewable/:id?',auth.authenticateToken ,dataEntry.getNonRenewable); 
-// router.delete('/non-renewable/:id',auth.authenticateToken,dataEntry.deleteNonRenewable); 
-
-// // SOLD
-// router.post('/sold',auth.authenticateToken,dataEntry.createSoldEnergy) 
-// router.put('/sold/:id',auth.authenticateToken,dataEntry.updateSoldEnergy);
-// router.get('/sold/:id?',auth.authenticateToken,dataEntry.getSoldEnergy); 
-// router.delete('/sold/:id',auth.authenticateToken,dataEntry.deleteSoldEnergy); 
-
-// // REDUCTION
-// router.post('/reduction',auth.authenticateToken,dataEntry.createReductionEnergy) 
-// router.put('/reduction/:id',auth.authenticateToken,dataEntry.updateReductionEnergy);
-// router.get('/reduction/:id?',auth.authenticateToken,dataEntry.getReductionEnergy); 
-// router.delete('/reduction/:id',auth.authenticateToken,dataEntry.deleteReductionEnergy); 
-
-// // WATER-PROVIDER
-// router.post('/water-provider',auth.authenticateToken,dataEntry.createWaterProvider) 
-// router.put('/water-provider/:id',auth.authenticateToken,dataEntry.updateWaterProvider);
-// router.get('/water-provider/:id?',auth.authenticateToken,dataEntry.getWaterProvider); 
-// router.delete('/water-provider/:id',auth.authenticateToken,dataEntry.deleteWaterProvider); 
-
-// // WATER-TANKER
-// router.post('/water-tanker',auth.authenticateToken,dataEntry.createWaterTanker) 
-// router.put('/water-tanker/:id',auth.authenticateToken,dataEntry.updateWaterTanker);
-// router.get('/water-tanker/:id?',auth.authenticateToken,dataEntry.getWaterTanker); 
-// router.delete('/water-tanker/:id',auth.authenticateToken,dataEntry.deleteWaterTanker); 
-
-// // WATER-BOTTLE
-// router.post('/water-bottle',auth.authenticateToken,dataEntry.createBottleWater) 
-// router.put('/water-bottle/:id',auth.authenticateToken,dataEntry.updateBottleWater);
-// router.get('/water-bottle/:id?',auth.authenticateToken,dataEntry.getBottleWater); 
-// router.delete('/water-bottle/:id',auth.authenticateToken,dataEntry.deleteBottleWater); 
-
-// // CONCRETE-MIX
-// router.post('/concrete',auth.authenticateToken,dataEntry.createBottleWater) 
-// router.put('/concrete/:id',auth.authenticateToken,dataEntry.updateBottleWater);
-// router.get('/concrete/:id?',auth.authenticateToken,dataEntry.getBottleWater); 
-// router.delete('/concrete/:id',auth.authenticateToken,dataEntry.deleteBottleWater);
-
-// // Building-Materials
-// router.post('/building-materials',auth.authenticateToken,dataEntry.createBuilding) 
-// router.put('/building-materials/:id',auth.authenticateToken,dataEntry.updateBuilding);
-// router.get('/building-materials/:id?',auth.authenticateToken,dataEntry.getBuilding); 
-// router.delete('/building-materials/:id',auth.authenticateToken,dataEntry.deleteBuilding); 
-
-// // Waste-Managements
-// router.post('/waste-managements',auth.authenticateToken,dataEntry.createWasteManagement) 
-// router.put('/waste-managements/:id',auth.authenticateToken,dataEntry.updateWasteManagement);
-// router.get('/waste-managements/:id?',auth.authenticateToken,dataEntry.getWasteManagement); 
-// router.delete('/waste-managements/:id',auth.authenticateToken,dataEntry.deleteWasteManagement); 
-
-// // Waste Direct-Disposal
-// router.post('/direct-disposals',auth.authenticateToken,dataEntry.createWasteManagement) 
-// router.put('/direct-disposals/:id',auth.authenticateToken,dataEntry.updateWasteManagement);
-// router.get('/direct-disposals/:id?',auth.authenticateToken,dataEntry.getWasteManagement); 
-// router.delete('/direct-disposals/:id',auth.authenticateToken,dataEntry.deleteWasteManagement); 
-
-
-// divert-disposals
-// router.post('/divert-disposals',auth.authenticateToken,dataEntry.createDivertedDisposal) 
-// router.put('/divert-disposals/:id',auth.authenticateToken,dataEntry.updateDivertedDisposal);
-// router.get('/divert-disposals/:id?',auth.authenticateToken,dataEntry.getDivertedDisposal); 
-// router.delete('/divert-disposals/:id',auth.authenticateToken,dataEntry.deleteDivertedDisposal);
-
-
-
-// Site-Vehicle
-// router.post('/site-vehicle',auth.authenticateToken,dataEntry.createSiteVehicle) 
-// router.put('/site-vehicle/:id',auth.authenticateToken,dataEntry.updateSiteVehicle);
-// router.get('/site-vehicle/:id?',auth.authenticateToken,dataEntry.getSiteVehicle); 
-// router.delete('/site-vehicle/:id',auth.authenticateToken,dataEntry.deleteSiteVehicle); 
-
-// // Worker-Transportation
-// router.post('/worker-transportation',auth.authenticateToken,dataEntry.createWorkerTransportation) 
-// router.put('/worker-transportation/:id',auth.authenticateToken,dataEntry.updateWorkerTransportation);
-// router.get('/worker-transportation/:id?',auth.authenticateToken,dataEntry.getWorkerTransportation); 
-// router.delete('/worker-transportation/:id',auth.authenticateToken,dataEntry.deleteWorkerTransportation); 
-
-
-// // Business-Travel
-// router.post('/business-travel',auth.authenticateToken,dataEntry.createBusinessTravel) 
-// router.put('/business-travel/:id',auth.authenticateToken,dataEntry.updateBusinessTravel);
-// router.get('/business-travel/:id?',auth.authenticateToken,dataEntry.getBusinessTravel); 
-// router.delete('/business-travel/:id',auth.authenticateToken,dataEntry.deleteBusinessTravel); 
-
-// // Employee-Commuting
-// router.post('/employee-commuting',auth.authenticateToken,dataEntry.createCommuting) 
-// router.put('/employee-commuting/:id',auth.authenticateToken,dataEntry.updateCommuting);
-// router.get('/employee-commuting/:id?',auth.authenticateToken,dataEntry.getCommuting); 
-// router.delete('/employee-commuting/:id',auth.authenticateToken,dataEntry.deleteCommuting); 
-
-
-// module.exports = router;
-
-
-
-
 const router = require('express').Router();
 const auth = require('../../middleware/authHandler');
 const dataEntry = require('../../controller/dataEntryController');
@@ -196,12 +80,12 @@ router.put('/energy/:id', auth.authenticateToken, dataEntry.updateEnergyProvider
  *       500:
  *         description: Server error
  */
-router.get('/energy/:id?', auth.authenticateToken, dataEntry.getEnergyProvider);
+router.get('/energy/:id?',auth.authenticateToken,  dataEntry.getEnergyProvider);
 
 /**
  * @swagger
  * /api/v1/data-entry/energy/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete an energy provider
  *     tags: [Data Entry]
  *     security:
@@ -221,7 +105,7 @@ router.get('/energy/:id?', auth.authenticateToken, dataEntry.getEnergyProvider);
  *       500:
  *         description: Server error
  */
-router.delete('/energy/:id', auth.authenticateToken, dataEntry.deleteEnergyProvider);
+router.patch('/energy/:id', auth.authenticateToken,  dataEntry.deleteEnergyProvider);
 
 
 // RENEWABLE
@@ -302,9 +186,9 @@ router.get('/renewable/:id?', auth.authenticateToken, dataEntry.getRenewable);
 
 /**
  * @swagger
- * /api/v1/data-entry/renewable/{id}:
- *   delete:
- *     summary: Delete a renewable energy source
+ * /api/v1/data-entry/energy/{id}:
+ *   patch:
+ *     summary: Delete an energy provider
  *     tags: [Data Entry]
  *     security:
  *       - bearerAuth: []
@@ -314,16 +198,16 @@ router.get('/renewable/:id?', auth.authenticateToken, dataEntry.getRenewable);
  *         required: true
  *         schema:
  *           type: string
- *         description: Renewable energy source ID
+ *         description: Energy provider ID
  *     responses:
  *       200:
- *         description: Renewable energy source deleted successfully
+ *         description: Energy provider deleted successfully
  *       404:
- *         description: Renewable energy source not found
+ *         description: Energy provider not found
  *       500:
  *         description: Server error
  */
-router.delete('/renewable/:id', auth.authenticateToken, dataEntry.deleteRenewable);
+router.patch('/energy/:id', auth.authenticateToken, dataEntry.deleteEnergyProvider);
 
 
 // NON-RENEWABLE
@@ -425,7 +309,7 @@ router.get('/non-renewable/:id?', auth.authenticateToken, dataEntry.getNonRenewa
  *       500:
  *         description: Server error
  */
-router.delete('/non-renewable/:id', auth.authenticateToken, dataEntry.deleteNonRenewable);
+router.patch('/non-renewable/:id', auth.authenticateToken, dataEntry.deleteNonRenewable);
 
 
 // SOLD
@@ -527,7 +411,7 @@ router.get('/sold/:id?', auth.authenticateToken, dataEntry.getSoldEnergy);
  *       500:
  *         description: Server error
  */
-router.delete('/sold/:id', auth.authenticateToken, dataEntry.deleteSoldEnergy);
+router.patch('/sold/:id', auth.authenticateToken, dataEntry.deleteSoldEnergy);
 
 
 // REDUCTION
@@ -629,7 +513,7 @@ router.get('/reduction/:id?', auth.authenticateToken, dataEntry.getReductionEner
  *       500:
  *         description: Server error
  */
-router.delete('/reduction/:id', auth.authenticateToken, dataEntry.deleteReductionEnergy);
+router.patch('/reduction/:id', auth.authenticateToken, dataEntry.deleteReductionEnergy);
 
 
 // WATER-PROVIDER
@@ -731,7 +615,7 @@ router.get('/water-provider/:id?', auth.authenticateToken, dataEntry.getWaterPro
  *       500:
  *         description: Server error
  */
-router.delete('/water-provider/:id', auth.authenticateToken, dataEntry.deleteWaterProvider);
+router.patch('/water-provider/:id', auth.authenticateToken, dataEntry.deleteWaterProvider);
 
 // WATER-TANKER
 /**
@@ -832,7 +716,7 @@ router.get('/water-tanker/:id?', auth.authenticateToken, dataEntry.getWaterTanke
  *       500:
  *         description: Server error
  */
-router.delete('/water-tanker/:id', auth.authenticateToken, dataEntry.deleteWaterTanker);
+router.patch('/water-tanker/:id', auth.authenticateToken, dataEntry.deleteWaterTanker);
 
 // WATER-BOTTLE
 /**
@@ -933,7 +817,7 @@ router.get('/water-bottle/:id?', auth.authenticateToken, dataEntry.getBottleWate
  *       500:
  *         description: Server error
  */
-router.delete('/water-bottle/:id', auth.authenticateToken, dataEntry.deleteBottleWater);
+router.patch('/water-bottle/:id', auth.authenticateToken, dataEntry.deleteBottleWater);
 
 // CONCRETE-MIX
 /**
@@ -1034,7 +918,7 @@ router.get('/concrete/:id?', auth.authenticateToken, dataEntry.getConcreteMix);
  *       500:
  *         description: Server error
  */
-router.delete('/concrete/:id', auth.authenticateToken, dataEntry.deleteConcreteMix);
+router.patch('/concrete/:id', auth.authenticateToken, dataEntry.deleteConcreteMix);
 
 // BUILDING-MATERIALS
 /**
@@ -1135,7 +1019,7 @@ router.get('/building-materials/:id?', auth.authenticateToken, dataEntry.getBuil
  *       500:
  *         description: Server error
  */
-router.delete('/building-materials/:id', auth.authenticateToken, dataEntry.deleteBuilding);
+router.patch('/building-materials/:id', auth.authenticateToken, dataEntry.deleteBuilding);
 
 
 // WASTE-MANAGEMENTS
@@ -1237,7 +1121,7 @@ router.get('/waste-managements/:id?', auth.authenticateToken, dataEntry.getWaste
  *       500:
  *         description: Server error
  */
-router.delete('/waste-managements/:id', auth.authenticateToken, dataEntry.deleteWasteManagement);
+router.patch('/waste-managements/:id', auth.authenticateToken, dataEntry.deleteWasteManagement);
 
 // WASTE-DIRECT-DISPOSAL
 /**
@@ -1338,7 +1222,7 @@ router.get('/direct-disposals/:id?', auth.authenticateToken, dataEntry.getDirect
  *       500:
  *         description: Server error
  */
-router.delete('/direct-disposals/:id', auth.authenticateToken, dataEntry.deleteDirectDisposal);
+router.patch('/direct-disposals/:id', auth.authenticateToken, dataEntry.deleteDirectDisposal);
 
 
 
@@ -1441,7 +1325,7 @@ router.get('/divert-disposals/:id?', auth.authenticateToken, dataEntry.getDivert
  *       500:
  *         description: Server error
  */
-router.delete('/divert-disposals/:id', auth.authenticateToken, dataEntry.deleteDivertedDisposal);
+router.patch('/divert-disposals/:id', auth.authenticateToken, dataEntry.deleteDivertedDisposal);
 
 // SITE VEHICLE
 /**
@@ -1542,7 +1426,7 @@ router.get('/site-vehicle/:id?', auth.authenticateToken, dataEntry.getSiteVehicl
  *       500:
  *         description: Server error
  */
-router.delete('/site-vehicle/:id', auth.authenticateToken, dataEntry.deleteSiteVehicle);
+router.patch('/site-vehicle/:id', auth.authenticateToken, dataEntry.deleteSiteVehicle);
 
 // WORKER TRANSPORTATION
 /**
@@ -1643,7 +1527,7 @@ router.get('/worker-transportation/:id?', auth.authenticateToken, dataEntry.getW
 *       500:
 *         description: Server error
 */
-router.delete('/worker-transportation/:id', auth.authenticateToken, dataEntry.deleteWorkerTransportation);
+router.patch('/worker-transportation/:id', auth.authenticateToken, dataEntry.deleteWorkerTransportation);
 
 // BUSINESS TRAVEL
 /**
@@ -1744,7 +1628,7 @@ router.get('/business-travel/:id?', auth.authenticateToken, dataEntry.getBusines
 *       500:
 *         description: Server error
 */
-router.delete('/business-travel/:id', auth.authenticateToken, dataEntry.deleteBusinessTravel);
+router.patch('/business-travel/:id', auth.authenticateToken, dataEntry.deleteBusinessTravel);
 
 // EMPLOYEE-COMMUTING
 /**
@@ -1845,11 +1729,6 @@ router.get('/employee-commuting/:id?', auth.authenticateToken, dataEntry.getComm
  *       500:
  *         description: Server error
  */
-router.delete('/employee-commuting/:id', auth.authenticateToken, dataEntry.deleteCommuting);
-
-
-
-
-
+router.patch('/employee-commuting/:id', auth.authenticateToken, dataEntry.deleteCommuting);
 
 module.exports = router;

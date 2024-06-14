@@ -31,6 +31,7 @@ const createEnergyProvider = async (req, res) => {
   }
 };
 
+
 const getEnergyProvider = async (req, res) => {
   let { id } = req.params;
   let { page, limit, projectId } = req.query;
@@ -39,14 +40,22 @@ const getEnergyProvider = async (req, res) => {
 
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false, 
+    };
 
-    // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
+
     if (id) {
-      result = await energyProvider.findById(id);
+      result = await energyProvider.findOne({ _id: id, safeDelete: false });
+      if (!result) {
+        return res.status(404).send({
+          status: false,
+          message: "Data not found",
+        });
+      }
       return res.status(200).send({
         status: true,
         message: "Get Data",
@@ -54,8 +63,11 @@ const getEnergyProvider = async (req, res) => {
       });
     } else {
       const skip = (page - 1) * limit;
-      result = await energyProvider.find(query).skip(skip).limit(limit);
-      const total_count = await energyProvider.countDocuments();
+      result = await energyProvider
+        .find(query)
+        .skip(skip)
+        .limit(limit);
+      const total_count = await energyProvider.countDocuments(query);
       return res.status(200).send({
         status: true,
         message: "Get Data with pagination",
@@ -94,18 +106,26 @@ const updateEnergyProvider = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+
 const deleteEnergyProvider = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await energyProvider.findByIdAndDelete(id);
-    return res.status(201).send({
+    const data = await energyProvider.findByIdAndUpdate(id, {$set:{safeDelete: true }}, { new: true });
+    if (!data) {
+      return res.status(404).send({
+        status: false,
+        message: "Data not found",
+      });
+    }
+    return res.status(200).send({
       status: true,
-      message: "Data has been deleted successfully",
+      message: "Data has been marked as deleted",
     });
   } catch (error) {
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
+
 
 const createNonRenewable = async (req, res) => {
   try {
@@ -120,6 +140,8 @@ const createNonRenewable = async (req, res) => {
   } catch (error) {
     return res.status(500).send({ message: error.message, success: 0 });
   }
+
+  
 };
 const getNonRenewable = async (req, res) => {
   let { id } = req.params;
@@ -128,14 +150,16 @@ const getNonRenewable = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await nonRenewable.findById(id);
+      result = await nonRenewable.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
       result = await nonRenewable.find(query).skip(skip).limit(limit);
@@ -181,7 +205,7 @@ const updateNonRenewable = async (req, res) => {
 const deleteNonRenewable = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await nonRenewable.findByIdAndDelete(id);
+    const data = await nonRenewable.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -214,14 +238,16 @@ const getRenewable = async (req, res) => {
   try {
     let result;
 
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await renwableModel.findById(id);
+      result = await renwableModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
       result = await renwableModel.find(query).skip(skip).limit(limit);
@@ -266,7 +292,7 @@ const updateRenewable = async (req, res) => {
 const deleteRenewable = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await renwableModel.findByIdAndDelete(id);
+    const data = await renwableModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -299,14 +325,16 @@ const getSoldEnergy = async (req, res) => {
   try {
     let result;
 
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await soldModel.findById(id);
+      result = await soldModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
       result = await soldModel.find(query).skip(skip).limit(limit);
@@ -347,7 +375,7 @@ const updateSoldEnergy = async (req, res) => {
 const deleteSoldEnergy = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await soldModel.findByIdAndDelete(id);
+    const data = await soldModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -379,14 +407,16 @@ const getReductionEnergy = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await reductionEnergyModel.findById(id);
+      result = await reductionEnergyModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
       result = await reductionEnergyModel.find(query).skip(skip).limit(limit);
@@ -431,7 +461,7 @@ const updateReductionEnergy = async (req, res) => {
 const deleteReductionEnergy = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await reductionEnergyModel.findByIdAndDelete(id);
+    const data = await reductionEnergyModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -462,14 +492,16 @@ const getWaterProvider = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await waterProviderModel.findById(id);
+      result = await waterProviderModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
       result = await waterProviderModel.find(query).skip(skip).limit(limit);
@@ -514,7 +546,7 @@ const updateWaterProvider = async (req, res) => {
 const deleteWaterProvider = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await waterProviderModel.findByIdAndDelete(id);
+    const data = await waterProviderModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -546,14 +578,16 @@ const getBottleWater = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await bottleWaterModel.findById(id);
+      result = await bottleWaterModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
       result = await bottleWaterModel.find(query).skip(skip).limit(limit);
@@ -599,7 +633,7 @@ const updateBottleWater = async (req, res) => {
 const deleteBottleWater = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await bottleWaterModel.findByIdAndDelete(id);
+    const data = await bottleWaterModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -631,14 +665,16 @@ const getWaterTanker = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await waterTankerModel.findById(id);
+      result = await waterTankerModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
       result = await waterTankerModel.find(query).skip(skip).limit(limit);
@@ -683,7 +719,7 @@ const updateWaterTanker = async (req, res) => {
 const deleteWaterTanker = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await waterTankerModel.findByIdAndDelete(id);
+    const data = await waterTankerModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -715,14 +751,16 @@ const getConcreteMix = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await concreteMixModel.findById(id);
+      result = await concreteMixModel.findOne({ _id: id, safeDelete: false });
     } else {
       result = await concreteMixModel.find(query).skip(skip).limit(limit);
     }
@@ -766,7 +804,7 @@ const updateConcreteMix = async (req, res) => {
 const deleteConcreteMix = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await concreteMixModel.findByIdAndDelete(id);
+    const data = await concreteMixModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -798,14 +836,16 @@ const getBuilding = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await buildingModel.findById(id);
+      result = await buildingModel.findOne({ _id: id, safeDelete: false });
     } else {
       result = await buildingModel.find(query).skip(skip).limit(limit);
     }
@@ -849,7 +889,7 @@ const updateBuilding = async (req, res) => {
 const deleteBuilding = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await buildingModel.findByIdAndDelete(id);
+    const data = await buildingModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -881,14 +921,16 @@ const getWasteManagement = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+    safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await wasteManagement.findById(id);
+      result = await wasteManagement.findOne({ _id: id, safeDelete: false });
     } else {
       result = await wasteManagement.find(query).skip(skip).limit(limit);
     }
@@ -932,7 +974,7 @@ const updateWasteManagement = async (req, res) => {
 const deleteWasteManagement = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await wasteManagement.findByIdAndDelete(id);
+    const data = await wasteManagement.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -965,14 +1007,16 @@ const getDirectDisposal = async (req, res) => {
   
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await disposaleModel.findById(id);
+      result = await disposaleModel.findOne({ _id: id, safeDelete: false });
     } else {
       result = await disposaleModel.find(query).skip(skip).limit(limit);
     }
@@ -1016,7 +1060,7 @@ const updateDirectDisposal = async (req, res) => {
 const deleteDirectDisposal = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await disposaleModel.findByIdAndDelete(id);
+    const data = await disposaleModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1048,14 +1092,16 @@ const getDivertedDisposal = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await divertedModel.findById(id);
+      result = await divertedModel.findOne({ _id: id, safeDelete: false });
     } else {
       result = await divertedModel.find(query).skip(skip).limit(limit);
     }
@@ -1099,7 +1145,7 @@ const updateDivertedDisposal = async (req, res) => {
 const deleteDivertedDisposal = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await divertedModel.findByIdAndDelete(id);
+    const data = await divertedModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1132,14 +1178,16 @@ const getWorkerTransportation = async (req, res) => {
   
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await workerTransportationModel.findById(id);
+      result = await workerTransportationModel.findOne({ _id: id, safeDelete: false });
     } else {
       result = await workerTransportationModel.find(query).skip(skip).limit(limit);
     }
@@ -1183,7 +1231,7 @@ const updateWorkerTransportation = async (req, res) => {
 const deleteWorkerTransportation = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await workerTransportationModel.findByIdAndDelete(id);
+    const data = await workerTransportationModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1215,14 +1263,16 @@ const getSiteVehicle = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await siteModel.findById(id);
+      result = await siteModel.findOne({ _id: id, safeDelete: false });
     } else {
       result = await siteModel.find(query).skip(skip).limit(limit);
     }
@@ -1262,7 +1312,7 @@ const updateSiteVehicle = async (req, res) => {
 const deleteSiteVehicle = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await siteModel.findByIdAndDelete(id);
+    const data = await siteModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1294,14 +1344,16 @@ const getBusinessTravel = async (req, res) => {
   limit = limit ? parseInt(limit) : 10;
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await siteModel.findById(id);
+      result = await siteModel.findOne({ _id: id, safeDelete: false });
     } else {
       result = await siteModel.find(query).skip(skip).limit(limit);
     }
@@ -1341,7 +1393,7 @@ const updateBusinessTravel = async (req, res) => {
 const deleteBusinessTravel = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await businessModel.findByIdAndDelete(id);
+    const data = await businessModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1351,6 +1403,8 @@ const deleteBusinessTravel = async (req, res) => {
   }
 };
 
+
+// Create-Commuting
 const createCommuting = async (req, res) => {
   try {
     const data = new commutingModel(req.body);
@@ -1374,14 +1428,16 @@ const getCommuting = async (req, res) => {
 
   try {
     let result;
-    const query = {};
+    const query = {
+      safeDelete: false
+    };
 
     // Check if projectId is provided in query parameters
     if (projectId) {
       query.projectId = projectId;
     }
     if (id) {
-      result = await commutingModel.findById(id);
+      result = await commutingModel.findOne({ _id: id, safeDelete: false });
       return res.status(200).send({
         status: true,
         message: "Get Data",
@@ -1432,7 +1488,7 @@ const updateCommuting = async (req, res) => {
 const deleteCommuting = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await commutingModel.findByIdAndDelete(id);
+    const data = await commutingModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
