@@ -25,7 +25,7 @@ const utilityWaterProviderSchema = new Schema({
     ref:monthlyReport,
     required: false
   },
-  waterConsumptionID: {
+  emissionInputId: {
     type: Number,
     required: true
   },
@@ -54,7 +54,14 @@ const utilityWaterProviderSchema = new Schema({
   unit: {
     type: String,
     enum: ["US Gallon", "Litre", "Cubic Meter"]
-  }
+  },
+  supportingDocument:{
+    type: String,
+    required: false
+  },
+  safeDelete:{
+    type: Boolean,
+  },
 },{timestamps:true}
 );
 

@@ -23,13 +23,19 @@ const energyNonRenewableSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
-  energyConsumptionId: {
+  emissionInputId: {
     type: Number,
     required: true
   },
   fuelType: {
     type: String,
     enum: ['Diesel','Petrol','CNG']
+  },
+  safeDelete:{
+    type: Boolean,
+  },
+  energyOutput:{
+    type: Number,
   },
   equipment: {
     type: String,

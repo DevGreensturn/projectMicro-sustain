@@ -30,6 +30,34 @@ const DivertedDisposalSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
+  emissionInputId: {
+    type: Number,
+    required: true
+  },
+  mainCollectionCompany:{
+    type: String,
+    required: true,
+  },
+  noOfTrips:{
+    type: Number,
+    required: true,
+  },
+  fuelUsed:{
+    type: Number,
+    required: true,
+  },
+  kindOfWaste:{
+    type: String,
+    enum: [
+      "hazard", "non-hazard"
+    ]
+  },
+  wasteType: {
+    type: String,
+    enum:[
+      "solid", "liquid"
+    ]
+  },
   divertedOperationType: {
     type: String,
     enum: [
@@ -46,6 +74,9 @@ const DivertedDisposalSchema = new mongoose.Schema({
   },
   supportingDocument: {
     type: String
+  },
+  safeDelete:{
+    type: Boolean
   }
 },
 {timestamps:true}

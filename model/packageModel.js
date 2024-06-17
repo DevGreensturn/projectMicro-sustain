@@ -10,7 +10,10 @@ const packageSchema = new mongoose.Schema({
         type:String,
         required:true,
         default:"BRONZE"
-    }
+    },
+    safeDelete:{
+        type: Boolean
+      }
 },
 {timestamps:true}
 );

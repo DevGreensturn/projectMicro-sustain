@@ -24,7 +24,7 @@ const energyRenewableSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
-  energyConsumptionId: {
+  emissionInputId: {
     type: Number,
     required: true
   },
@@ -45,7 +45,10 @@ const energyRenewableSchema = new mongoose.Schema({
     type: String,
     enum: ['Kwh', 'Joule', 'Wh'],
     required: false
-  }
+  },
+  safeDelete:{
+    type: Boolean,
+  },
 },{timestamps:true}
 );
 

@@ -40,6 +40,9 @@ const supplierSchema = new mongoose.Schema({
     default:"ACTIVE",
     required: false
   },
+  safeDelete:{
+    type: Boolean
+  }
 },
 {timestamps:true}
 );

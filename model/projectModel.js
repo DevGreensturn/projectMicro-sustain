@@ -38,12 +38,17 @@ const projectSchema = new mongoose.Schema({
   },
   roadLength: {
     type:String,
-   
-    required: false
+    required: false,
+    enum:[
+      "8 km", "8-20 km", "more than 20 km"
+    ]
   },
   infrastructure: {
     type:String,
-    required: false
+    required: false,
+    enum: [
+      "100ha", "100 - 250 ha", "more than 250 ha"
+    ]
   },
   SubscriptionCategory: {
     type: String,
@@ -56,11 +61,15 @@ const projectSchema = new mongoose.Schema({
   },
   subscriptionTier: {
     type:String,
-    required: false
+    required: false,
+    
   },
   SustainabilityRating: {
     type: String,
     required: false
+  },
+  safeDelete:{
+    type: Boolean
   }
 },
 {timestamps:true}

@@ -108,6 +108,9 @@ let CodesSchema = new mongoose.Schema({
     status: {
         type: Boolean,
         default: false
+    },
+    safeDelete:{
+        type: Boolean
     }
 }, { timestamps: true });
 

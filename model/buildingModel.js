@@ -99,6 +99,9 @@ const buildingMaterialSchema = new mongoose.Schema({
   },
   percentageReclaimedMaterial: {
     type: Number
+  },
+  safeDelete:{
+    type: Boolean
   }
 },
 {timestamps:true}

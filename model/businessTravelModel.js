@@ -23,7 +23,7 @@ const travelSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
-  transportationId: {
+  emissionInputId: {
     type: Number,
     required: false
   },
@@ -34,6 +34,9 @@ const travelSchema = new mongoose.Schema({
   distanceTravelledByOneTraveller: {
     type: Number,
     required: false
+  },
+  safeDelete:{
+    type: Boolean
   }
 }, { timestamps: true });
 

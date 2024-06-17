@@ -51,6 +51,9 @@ const endUserSchema = new mongoose.Schema({
     default:"Email",
     required: false
   },
+  safeDelete:{
+    type: Boolean
+  }
 },
 {timestamps:true}
 );

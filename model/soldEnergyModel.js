@@ -25,6 +25,10 @@ const soldEnergySchema = new Schema({
     ref:monthlyReport,
     required: false
   },
+  emissionInputId: {
+    type: String,
+    required: false
+  },
   readingDate: {
     type: Date
   },
@@ -41,7 +45,10 @@ const soldEnergySchema = new Schema({
   },
   supportingDocument: {
     type: Buffer
-  }
+  },
+  safeDelete:{
+    type: Boolean,
+  },
 },{timestamps:true});
 
 const SoldEnergy = mongoose.model('SoldEnergy', soldEnergySchema);

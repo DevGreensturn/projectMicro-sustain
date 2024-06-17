@@ -70,6 +70,9 @@ const concreteMixSchema = new Schema({
   },
   fuelUsedPerTruck: {
     type: Number
+  },
+  safeDelete:{
+    type: Boolean
   }
 },{timestamps:true}
 );

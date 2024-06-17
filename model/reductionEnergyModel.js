@@ -24,7 +24,7 @@ const energyReductionSchema = new Schema({
     ref:monthlyReport,
     required: false
   },
-  energyConsumptionID: {
+  emissionInputId: {
     type: String,
     required: false
   },
@@ -45,7 +45,10 @@ const energyReductionSchema = new Schema({
   calculationMethod: {
     type: String,
     enum: ['Estimated', 'Modeled', 'Measured']
-  }
+  },
+  safeDelete:{
+    type: Boolean,
+  },
 },{timestamps:true}
 );
 

@@ -23,7 +23,7 @@ const energyUtilityProviderSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
-  energyConsumptionID: {
+  emissionInputId: {
     type: Number,
     required: false
   },

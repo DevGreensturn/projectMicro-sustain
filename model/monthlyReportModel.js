@@ -43,6 +43,16 @@ const reportSchema = new mongoose.Schema({
     type: String,
     enum: ['Draft', 'Submitted', 'Audited', 'Approved','Returned'],
     required: false
+  },
+  approvedByDeveloper:{
+    type: String,
+    required: true,
+  },
+  returnWithComment:{
+    type: String,
+  },
+  safeDelete:{
+    type: Boolean
   }
 },{timestamps:true}
 );

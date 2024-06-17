@@ -23,7 +23,7 @@ const employeeTransportationSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
-  transportationId: {
+  emissionInputId: {
     type: Number,
     required: true
   },
@@ -38,6 +38,9 @@ const employeeTransportationSchema = new mongoose.Schema({
   averageDistanceTravelledForVehicle: {
     type: Number,
     required: false
+  },
+  safeDelete:{
+    type: Boolean
   }
 }, { timestamps: true });
 

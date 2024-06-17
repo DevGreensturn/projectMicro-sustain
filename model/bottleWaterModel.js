@@ -24,7 +24,7 @@ const bottledWaterSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
-  waterConsumptionID: {
+  emissionInputId: {
     type: Number,
     required: true
   },
@@ -49,7 +49,10 @@ const bottledWaterSchema = new mongoose.Schema({
   },
   supportingDocument: {
     type: String
-  }
+  },
+  safeDelete:{
+    type: Boolean,
+  },
 },{timestamps:true}
 );
 

@@ -23,7 +23,8 @@ const workerTransportationSchema = new mongoose.Schema({
     ref:monthlyReport,
     required: false
   },
-  transportationId: {
+
+  emissionInputId: {
     type: Number,
     required: false
   },
@@ -38,6 +39,9 @@ const workerTransportationSchema = new mongoose.Schema({
   fuelConsumption: {
     type: Number,
     required: false
+  },
+  safeDelete:{
+    type: Boolean
   }
 }, { timestamps: true });
 

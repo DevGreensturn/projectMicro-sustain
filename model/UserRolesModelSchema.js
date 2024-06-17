@@ -99,6 +99,9 @@ var UserRolesSchema = new mongoose.Schema({
 		Enum:['ACTIVE', 'INACTIVE'],
 		default: "ACTIVE"
 	},
+    safeDelete:{
+        type: Boolean
+    }
 	
 
 }, {timestamps: true});
