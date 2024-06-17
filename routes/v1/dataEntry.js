@@ -289,7 +289,7 @@ router.get('/non-renewable/:id?', auth.authenticateToken, dataEntry.getNonRenewa
 /**
  * @swagger
  * /api/v1/data-entry/non-renewable/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a non-renewable energy source
  *     tags: [Data Entry]
  *     security:
@@ -391,7 +391,7 @@ router.get('/sold/:id?', auth.authenticateToken, dataEntry.getSoldEnergy);
 /**
  * @swagger
  * /api/v1/data-entry/sold/{id}:
- *   delete:
+ *      patch:
  *     summary: Delete a sold energy record
  *     tags: [Data Entry]
  *     security:
@@ -493,7 +493,7 @@ router.get('/reduction/:id?', auth.authenticateToken, dataEntry.getReductionEner
 /**
  * @swagger
  * /api/v1/data-entry/reduction/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a reduction energy record
  *     tags: [Data Entry]
  *     security:
@@ -595,7 +595,7 @@ router.get('/water-provider/:id?', auth.authenticateToken, dataEntry.getWaterPro
 /**
  * @swagger
  * /api/v1/data-entry/water-provider/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a water provider
  *     tags: [Data Entry]
  *     security:
@@ -696,7 +696,7 @@ router.get('/water-tanker/:id?', auth.authenticateToken, dataEntry.getWaterTanke
 /**
  * @swagger
  * /api/v1/data-entry/water-tanker/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a water tanker entry
  *     tags: [Data Entry]
  *     security:
@@ -797,7 +797,7 @@ router.get('/water-bottle/:id?', auth.authenticateToken, dataEntry.getBottleWate
 /**
  * @swagger
  * /api/v1/data-entry/water-bottle/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a water bottle entry
  *     tags: [Data Entry]
  *     security:
@@ -898,7 +898,7 @@ router.get('/concrete/:id?', auth.authenticateToken, dataEntry.getConcreteMix);
 /**
  * @swagger
  * /api/v1/data-entry/concrete/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a concrete mix entry
  *     tags: [Data Entry]
  *     security:
@@ -999,7 +999,7 @@ router.get('/building-materials/:id?', auth.authenticateToken, dataEntry.getBuil
 /**
  * @swagger
  * /api/v1/data-entry/building-materials/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a building material entry
  *     tags: [Data Entry]
  *     security:
@@ -1101,7 +1101,7 @@ router.get('/waste-managements/:id?', auth.authenticateToken, dataEntry.getWaste
 /**
  * @swagger
  * /api/v1/data-entry/waste-managements/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a waste management entry
  *     tags: [Data Entry]
  *     security:
@@ -1202,7 +1202,7 @@ router.get('/direct-disposals/:id?', auth.authenticateToken, dataEntry.getDirect
 /**
  * @swagger
  * /api/v1/data-entry/direct-disposals/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a waste direct disposal entry
  *     tags: [Data Entry]
  *     security:
@@ -1305,7 +1305,7 @@ router.get('/divert-disposals/:id?', auth.authenticateToken, dataEntry.getDivert
 /**
  * @swagger
  * /api/v1/data-entry/divert-disposals/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a diverted disposal
  *     tags: [Data Entry]
  *     security:
@@ -1406,7 +1406,7 @@ router.get('/site-vehicle/:id?', auth.authenticateToken, dataEntry.getSiteVehicl
 /**
  * @swagger
  * /api/v1/data-entry/site-vehicle/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete a site vehicle
  *     tags: [Data Entry]
  *     security:
@@ -1507,7 +1507,7 @@ router.get('/worker-transportation/:id?', auth.authenticateToken, dataEntry.getW
 /**
 * @swagger
 * /api/v1/data-entry/worker-transportation/{id}:
-*   delete:
+*   patch:
 *     summary: Delete a worker transportation entry
 *     tags: [Data Entry]
 *     security:
@@ -1608,7 +1608,7 @@ router.get('/business-travel/:id?', auth.authenticateToken, dataEntry.getBusines
 /**
 * @swagger
 * /api/v1/data-entry/business-travel/{id}:
-*   delete:
+*   patch:
 *     summary: Delete a business travel entry
 *     tags: [Data Entry]
 *     security:
@@ -1709,7 +1709,7 @@ router.get('/employee-commuting/:id?', auth.authenticateToken, dataEntry.getComm
 /**
  * @swagger
  * /api/v1/data-entry/employee-commuting/{id}:
- *   delete:
+ *   patch:
  *     summary: Delete an employee commuting entry
  *     tags: [Data Entry]
  *     security:
