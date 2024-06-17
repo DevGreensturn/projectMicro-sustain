@@ -64,6 +64,10 @@ const projectSchema = new mongoose.Schema({
     required: false,
     
   },
+  cumulativeManhour: {
+    type: String,
+    required: false
+  },
   SustainabilityRating: {
     type: String,
     required: false
