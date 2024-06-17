@@ -391,7 +391,7 @@ router.get('/sold/:id?', auth.authenticateToken, dataEntry.getSoldEnergy);
 /**
  * @swagger
  * /api/v1/data-entry/sold/{id}:
- *      patch:
+ *     patch:
  *     summary: Delete a sold energy record
  *     tags: [Data Entry]
  *     security:
