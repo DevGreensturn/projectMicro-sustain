@@ -126,6 +126,6 @@ router.put("/:id", auth.authenticateToken, projects.updateProject);
  *       500:
  *         description: Server error
  */
-router.patch("/:id", auth.authenticateToken, projects.updateProject);
+router.patch("/:id", auth.authenticateToken, projects.deleteProject);
 
 module.exports = router;

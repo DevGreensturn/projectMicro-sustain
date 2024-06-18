@@ -11,7 +11,7 @@ const createProject = async (req, res) => {
       response: result,
     });
   } catch (error) {
-    return res.status(500).send({ message: error.message, success: 0 });
+    return res.status(500).send({ message: error.message, success: 0,status:false });
   }
 };
 
@@ -86,26 +86,31 @@ const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const options = { new: true };
+    // Find the project by id
     const findProject = await projectModel.findById(id);
+
+    // If project not found, send 404 response
     if (!findProject) {
-      return res.status(404).send({ message: "data not found", status: false });
-    } else {
-      const result = await projectModel.findByIdAndUpdate(
-        id,
-        {$set:{safeDelete:true}},
-        options
-      );
-      return res.status(200).send({
-        status: true,
-        message: "Project has been deleted",
-        response: result,
-      });
+      return res.status(404).send({ message: "Project not found", status: false });
     }
+
+    // Update the project to set safeDelete to true
+    const options = { new: true };
+    const result = await projectModel.findByIdAndUpdate(id, { $set: { safeDelete: true } }, options);
+
+    // Send the response with the updated project
+    return res.status(200).send({
+      status: true,
+      message: "Project has been deleted",
+      response: result,
+    });
   } catch (error) {
-    return res.status(500).send({ message: error.message });
+    // Handle any errors that occur
+    console.error("Error deleting project:", error); // Logging the error
+    return res.status(500).send({ message: error.message, status: false });
   }
 };
+
 
 module.exports = {
   createProject,
