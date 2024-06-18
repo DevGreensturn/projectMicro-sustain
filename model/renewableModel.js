@@ -48,6 +48,7 @@ const energyRenewableSchema = new mongoose.Schema({
   },
   safeDelete:{
     type: Boolean,
+    default:false
   },
 },{timestamps:true}
 );

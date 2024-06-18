@@ -33,6 +33,7 @@ const energyNonRenewableSchema = new mongoose.Schema({
   },
   safeDelete:{
     type: Boolean,
+    default:false
   },
   energyOutput:{
     type: Number,

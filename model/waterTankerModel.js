@@ -71,6 +71,7 @@ const waterConsumptionSchema = new mongoose.Schema({
   },
   safeDelete:{
     type: Boolean,
+    default:false
   },
 },{timestamps:true}
 );

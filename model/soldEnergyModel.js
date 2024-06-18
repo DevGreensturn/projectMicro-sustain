@@ -48,6 +48,7 @@ const soldEnergySchema = new Schema({
   },
   safeDelete:{
     type: Boolean,
+    default:false
   },
 },{timestamps:true});
 

@@ -52,6 +52,7 @@ const bottledWaterSchema = new mongoose.Schema({
   },
   safeDelete:{
     type: Boolean,
+    default:false
   },
 },{timestamps:true}
 );

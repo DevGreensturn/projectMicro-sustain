@@ -61,6 +61,7 @@ const utilityWaterProviderSchema = new Schema({
   },
   safeDelete:{
     type: Boolean,
+    default:false
   },
 },{timestamps:true}
 );
