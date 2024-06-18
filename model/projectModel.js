@@ -47,7 +47,7 @@ const projectSchema = new mongoose.Schema({
     type:String,
     required: false,
     enum: [
-      "100ha", "100 - 250 ha", "more than 250 ha"
+      "100 ha", "100 - 250 ha", "more than 250 ha"
     ]
   },
   SubscriptionCategory: {

@@ -82,9 +82,34 @@ const updateProject = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
+const deleteProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const options = { new: true };
+    const findProject = await projectModel.findById(id);
+    if (!findProject) {
+      return res.status(404).send({ message: "data not found", status: false });
+    } else {
+      const result = await projectModel.findByIdAndUpdate(
+        id,
+        {$set:{safeDelete:true}},
+        options
+      );
+      return res.status(200).send({
+        status: true,
+        message: "Project has been deleted",
+        response: result,
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
 
 module.exports = {
   createProject,
   getProjectData,
   updateProject,
+  deleteProject
 };

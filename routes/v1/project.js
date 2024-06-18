@@ -97,4 +97,35 @@ router.get("/:id?", auth.authenticateToken, projects.getProjectData);
  */
 router.put("/:id", auth.authenticateToken, projects.updateProject);
 
+/**
+ * @swagger
+ * /api/v1/projects/{id}:
+ *   put:
+ *     summary: Update a project
+ *     tags: [Projects]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Project ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Project'
+ *     responses:
+ *       200:
+ *         description: Project updated successfully
+ *       404:
+ *         description: Project not found
+ *       500:
+ *         description: Server error
+ */
+router.patch("/:id", auth.authenticateToken, projects.updateProject);
+
 module.exports = router;
