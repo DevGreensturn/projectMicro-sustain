@@ -45,8 +45,9 @@ const reportSchema = new mongoose.Schema({
     required: false
   },
   approvedByDeveloper:{
-    type: String,
-    required: true,
+    type:mongoose.Types.ObjectId,
+    ref:userDetails,
+    required: false
   },
   returnWithComment:{
     type: String,
