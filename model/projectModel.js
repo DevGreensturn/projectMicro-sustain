@@ -73,7 +73,8 @@ const projectSchema = new mongoose.Schema({
     required: false
   },
   safeDelete:{
-    type: Boolean
+    type: Boolean,
+    default:false
   }
 },
 {timestamps:true}
