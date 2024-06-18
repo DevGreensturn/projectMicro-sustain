@@ -24,7 +24,7 @@ const getProjectData = async (req, res) => {
 
   try {
     let result;
-    const query = {};
+    const query = {safeDelete:false};
 
     // Check if projectPackageId is provided in query parameters
     if (projectPackageId) {
