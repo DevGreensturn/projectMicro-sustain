@@ -20,7 +20,7 @@ const getMonthlyData = async (req, res) => {
         select: 'firstName lastName email' // Replace with the actual fields you want from the userDetails collection
       });
     } else if(projectId || packageId) {
-      result = await monthlyReport.find({ projectId:projectId,packageId:packageId })
+      result = await monthlyReport.find({ projectId:projectId,packageId:packageId,safeDelete:false })
         .populate({
           path: 'projectId',
           select: 'projectName' // Replace with the actual fields you want from the project collection
@@ -34,7 +34,7 @@ const getMonthlyData = async (req, res) => {
           select: 'firstName lastName email' // Replace with the actual fields you want from the userDetails collection
         });
     }else{
-      result = await monthlyReport.find()
+      result = await monthlyReport.find({safeDelete:false })
         .populate({
           path: 'projectId',
           select: 'projectName' // Replace with the actual fields you want from the project collection
@@ -72,10 +72,55 @@ const createMonthlyReport = async (req, res) => {
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
+const updateMonthlyReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const options = { new: true };
+    const findData = await monthlyReport.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false });
+    } else {
+      const result = await monthlyReport.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
+      return res.status(200).send({
+        status: true,
+        message: "Monthly Report Data updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
+
+const deleteMonthlyReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await monthlyReport.findByIdAndUpdate(id, {$set:{safeDelete: true }}, { new: true });
+    if (!data) {
+      return res.status(404).send({
+        status: false,
+        message: "Data not found",
+      });
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Data has been marked as deleted",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
 
 
 
 module.exports = {
   getMonthlyData,
-  createMonthlyReport
+  createMonthlyReport,
+  updateMonthlyReport,
+  deleteMonthlyReport
 };
