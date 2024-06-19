@@ -33,7 +33,8 @@ const concreteMixSchema = new Schema({
     type: String
   },
   type: {
-    type: String
+    type: String,
+    enum: ["precast", "cast-in-situ"]
   },
   volume: {
     type: Number
