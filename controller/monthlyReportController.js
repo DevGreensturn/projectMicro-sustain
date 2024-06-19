@@ -72,10 +72,55 @@ const createMonthlyReport = async (req, res) => {
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
+const updateMonthlyReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const options = { new: true };
+    const findData = await monthlyReport.findById(id);
+    if (!findData) {
+      return res.status(404).send({ message: "data not found", status: false });
+    } else {
+      const result = await monthlyReport.findByIdAndUpdate(
+        id,
+        req.body,
+        options
+      );
+      return res.status(200).send({
+        status: true,
+        message: "Monthly Report Data updated",
+        response: result,
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({ message: error.message });
+  }
+};
+
+const deleteMonthlyReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await monthlyReport.findByIdAndUpdate(id, {$set:{safeDelete: true }}, { new: true });
+    if (!data) {
+      return res.status(404).send({
+        status: false,
+        message: "Data not found",
+      });
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Data has been marked as deleted",
+    });
+  } catch (error) {
+    return res.status(500).send({ message: error.message, success: 0 });
+  }
+};
 
 
 
 module.exports = {
   getMonthlyData,
-  createMonthlyReport
+  createMonthlyReport,
+  updateMonthlyReport,
+  deleteMonthlyReport
 };
