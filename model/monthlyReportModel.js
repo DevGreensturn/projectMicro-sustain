@@ -53,7 +53,8 @@ const reportSchema = new mongoose.Schema({
     type: String,
   },
   safeDelete:{
-    type: Boolean
+    type: Boolean,
+    default:false
   }
 },{timestamps:true}
 );
