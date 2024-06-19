@@ -20,7 +20,7 @@ const getMonthlyData = async (req, res) => {
         select: 'firstName lastName email' // Replace with the actual fields you want from the userDetails collection
       });
     } else if(projectId || packageId) {
-      result = await monthlyReport.find({ projectId:projectId,packageId:packageId })
+      result = await monthlyReport.find({ projectId:projectId,packageId:packageId,safeDelete:false })
         .populate({
           path: 'projectId',
           select: 'projectName' // Replace with the actual fields you want from the project collection
