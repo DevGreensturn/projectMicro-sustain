@@ -129,7 +129,7 @@ const deleteEnergyProvider = async (req, res) => {
 
 const createNonRenewable = async (req, res) => {
   try {
-    const data = new NonRenewable(req.body);
+    const data = new nonRenewable(req.body);
     const result = await data.save();
 
     return res.status(201).send({
