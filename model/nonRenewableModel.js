@@ -29,7 +29,7 @@ const energyNonRenewableSchema = new mongoose.Schema({
   },
   fuelType: {
     type: String,
-    enum: ['Diesel','Petrol','CNG']
+    enum: ['Diesel','Petrol','CNG','LPG']
   },
   safeDelete:{
     type: Boolean,
