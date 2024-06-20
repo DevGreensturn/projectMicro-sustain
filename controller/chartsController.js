@@ -277,8 +277,6 @@ const energyLineConsumption = async (req, res) => {
     return res.status(500).send({ error: error.message, status: false });
   }
 };
-
-
 const waterPieConsumption = async (req, res) => {
   // Uncomment and use if you need to filter by date or month
    let { dateRange,projectId } = req.body;
@@ -534,11 +532,6 @@ const waterLineConsumption = async (req, res) => {
     return res.status(500).send({ error: error.message, status: false });
   }
 };
-
-
-
-
-
 const concretePieConsumption = async (req, res) => {
   let { dateRange, projectId ,packageId} = req.body;
   try {
@@ -550,7 +543,7 @@ const concretePieConsumption = async (req, res) => {
     let packageIdd = new ObjectId(packageId);
 
 
-    let query = { projectId: projectIdd ,packageId:packageIdd }; // Base query
+    let query = { projectId: projectIdd ,packageId:packageIdd };
 
     // Adjust the query based on the date range
     if (month && year) {
@@ -621,6 +614,233 @@ const concretePieConsumption = async (req, res) => {
 
 
 
+const buildingMaterialPieConsumption = async (req, res) => {
+  let { dateRange, projectId, packageId } = req.body;
+
+  try {
+    const timestampsDate = new Date(dateRange);
+    const month = timestampsDate.getMonth() + 1;
+    const year = timestampsDate.getFullYear();
+    console.log(month, year);
+    let projectIdd = new ObjectId(projectId);
+    let packageIdd = new ObjectId(packageId);
+
+    let query = { projectId: projectIdd, packageId: packageIdd };
+    if (month && year) {
+      query.$expr = {
+        $and: [
+          { $eq: [{ $month: "$createdAt" }, month] },
+          { $eq: [{ $year: "$createdAt" }, year] }
+        ]
+      };
+    } else if (year) {
+      query.$expr = {
+        $eq: [{ $year: "$createdAt" }, year]
+      };
+    } else if (month) {
+      query.$expr = {
+        $eq: [{ $month: "$createdAt" }, month]
+      };
+    }
+
+
+
+    const pipeline = [
+      {
+        $match: query
+      },
+      {
+        $group: {
+          _id: "$materialSource",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalDocuments: { $sum: "$count" },
+          details: { $push: { materialSource: "$_id", count: "$count" } }
+        }
+      },
+      {
+        $unwind: "$details"
+      },
+      {
+        $project: {
+          materialSource: "$details.materialSource",
+          percentage: {
+            $multiply: [
+              { $divide: ["$details.count", "$totalDocuments"] },
+              100
+            ]
+          }
+        }
+      }
+    ];
+    const result = await buildingModel.aggregate(pipeline);
+
+    return res.status(200).send({
+      status: true,
+      message: "Building Material Consumption by Source",
+      result: result
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
+const divertedDisposalPie = async (req, res) => {
+  let { dateRange, projectId, packageId } = req.body;
+
+  try {
+    const timestampsDate = new Date(dateRange);
+    const month = timestampsDate.getMonth() + 1;
+    const year = timestampsDate.getFullYear();
+
+    let projectIdd = new ObjectId(projectId);
+    let packageIdd = new ObjectId(packageId);
+
+    const query = { projectId: projectIdd, packageId: packageIdd };
+
+    if (month && year) {
+      query.$expr = {
+        $and: [
+          { $eq: [{ $month: "$createdAt" }, month] },
+          { $eq: [{ $year: "$createdAt" }, year] }
+        ]
+      };
+    } else if (year) {
+      query.$expr = {
+        $eq: [{ $year: "$createdAt" }, year]
+      };
+    } else if (month) {
+      query.$expr = {
+        $eq: [{ $month: "$createdAt" }, month]
+      };
+    }
+
+    const pipeline = [
+      {
+        $match: query
+      },
+      {
+        $group: {
+          _id: "$divertedOperationType",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalDocuments: { $sum: "$count" },
+          details: { $push: { divertedOperationType: "$_id", count: "$count" } }
+        }
+      },
+      {
+        $unwind: "$details"
+      },
+      {
+        $project: {
+          divertedOperationType: "$details.divertedOperationType",
+          percentage: {
+            $multiply: [
+              { $divide: ["$details.count", "$totalDocuments"] },
+              100
+            ]
+          }
+        }
+      }
+    ];
+
+    const result = await divertedModel.aggregate(pipeline);
+
+    return res.status(200).send({
+      status: true,
+      message: "Diverted disposal consumption by source",
+      result: result
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
+
+const directedDisposalPie = async (req, res) => {
+  try {
+    let { dateRange, projectId, packageId } = req.body;
+
+    const timestampsDate = new Date(dateRange);
+    const month = timestampsDate.getMonth() + 1;
+    const year = timestampsDate.getFullYear();
+
+    let projectIdd = new ObjectId(projectId);
+    let packageIdd = new ObjectId(packageId);
+
+    let query = { projectId: projectIdd, packageId: packageIdd };
+    if (month && year) {
+      query.$expr = {
+        $and: [
+          { $eq: [{ $month: "$createdAt" }, month] },
+          { $eq: [{ $year: "$createdAt" }, year] }
+        ]
+      };
+    } else if (year) {
+      query.$expr = {
+        $eq: [{ $year: "$createdAt" }, year]
+      };
+    } else if (month) {
+      query.$expr = {
+        $eq: [{ $month: "$createdAt" }, month]
+      };
+    }
+
+    const pipeline = [
+      {
+        $match: query
+      },
+      {
+        $group: {
+          _id: "$directedOperationType",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalDocuments: { $sum: "$count" },
+          details: { $push: { directedOperationType: "$_id", count: "$count" } }
+        }
+      },
+      {
+        $unwind: "$details"
+      },
+      {
+        $project: {
+          directedOperationType: "$details.directedOperationType",
+          percentage: {
+            $multiply: [
+              { $divide: ["$details.count", "$totalDocuments"] },
+              100
+            ]
+          }
+        }
+      }
+    ];
+
+    const result = await disposaleModel.aggregate(pipeline);
+
+    return res.status(200).send({
+      status: true,
+      message: "Directed disposal consumption by source",
+      result: result
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
 
 // energyConsumption();
 
@@ -629,5 +849,8 @@ module.exports ={
   energyLineConsumption,
   waterPieConsumption,
   waterLineConsumption,
-  concretePieConsumption
+  concretePieConsumption,
+  buildingMaterialPieConsumption,
+  divertedDisposalPie,
+  directedDisposalPie
 }

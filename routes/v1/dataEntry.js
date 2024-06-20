@@ -941,7 +941,7 @@ router.patch('/concrete/:id', auth.authenticateToken, dataEntry.deleteConcreteMi
  *       500:
  *         description: Server error
  */
-router.post('/building-materials', auth.authenticateToken, dataEntry.createBuilding);
+router.post('/building-materials',auth.authenticateToken, dataEntry.createBuilding);
 
 /**
  * @swagger
