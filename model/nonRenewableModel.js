@@ -25,7 +25,7 @@ const energyNonRenewableSchema = new mongoose.Schema({
   },
   emissionInputId: {
     type: Number,
-    required: true
+    required: false
   },
   fuelType: {
     type: String,
