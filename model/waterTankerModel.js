@@ -44,7 +44,7 @@ const waterConsumptionSchema = new mongoose.Schema({
   waterConsumption: {
     type: Number
   },
-  Unit: {
+  unit: {
     type: String,
     enum: [
       "US Gallon",
