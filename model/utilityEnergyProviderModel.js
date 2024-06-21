@@ -4,10 +4,6 @@ const package = require("../model/packageModel");
 const project = require("../model/projectModel");
 
 const energyUtilityProviderSchema = new mongoose.Schema({
-  energyUtilityProviderID: {
-    type: Number,
-    required: false
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,
@@ -59,9 +55,9 @@ const energyUtilityProviderSchema = new mongoose.Schema({
     type: String,
     enum: ['Kwh', 'Joule', 'Wh']
   },
-  safeDelete: {
+  safeDelete:{
     type: Boolean,
-    default: false
+    default:false
   },
   supportingDocuments: [{
     type: String,

@@ -5,10 +5,6 @@ const project = require("../model/projectModel");
 
 // Define the schema
 const waterConsumptionSchema = new mongoose.Schema({
-  waterTankerID: {
-    type: Number,
-    required: false
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,

@@ -6,10 +6,6 @@ const wasteManagement = require("../model/wasteManagementModel");
 
 // Define the schema
 const DivertedDisposalSchema = new mongoose.Schema({
-  divertedDisposalID: {
-    type: Number,
-    required: false
-  },
   wasteId: {
     type: mongoose.Types.ObjectId,
     ref:wasteManagement,
@@ -76,8 +72,9 @@ const DivertedDisposalSchema = new mongoose.Schema({
     type: String
   },
   safeDelete:{
-    type: Boolean
-  }
+    type: Boolean,
+    default:false
+  },
 },
 {timestamps:true}
 );

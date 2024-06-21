@@ -4,10 +4,6 @@ const package = require("../model/packageModel");
 const project = require("../model/projectModel");
 
 const wasteSchema = new mongoose.Schema({
-  wasteID: {
-    type: Number,
-    required: false
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,
@@ -57,7 +53,11 @@ const wasteSchema = new mongoose.Schema({
   },
   supportingDocument: {
     type: String
-  }
+  },
+  safeDelete:{
+    type: Boolean,
+    default:false
+  },
 },{timestamps:true}
 );
 

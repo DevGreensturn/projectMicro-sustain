@@ -5,10 +5,6 @@ const project = require("../model/projectModel");
 const wasteManagement = require("../model/wasteManagementModel");
 
 const directedDisposalSchema = new mongoose.Schema({
-  directedDisposalID: {
-    type: Number,
-    required: false
-  },
   wasteId: {
     type: mongoose.Types.ObjectId,
     ref:wasteManagement,
@@ -75,8 +71,9 @@ const directedDisposalSchema = new mongoose.Schema({
   supportingDocument: {
     type: Buffer
   },
-  safeDelete: {
-    type: Boolean
+  safeDelete:{
+    type: Boolean,
+    default:false
   },
 },
 {timestamps:true}

@@ -5,10 +5,6 @@ const project = require("../model/projectModel");
 
 // Define the schema
 const buildingMaterialSchema = new mongoose.Schema({
-  buildingMaterialID: {
-    type: Number,
-    required: false
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,
@@ -101,8 +97,9 @@ const buildingMaterialSchema = new mongoose.Schema({
     type: Number
   },
   safeDelete:{
-    type: Boolean
-  }
+    type: Boolean,
+    default:false
+  },
 },
 {timestamps:true}
 );

@@ -4,10 +4,6 @@ const package = require("../model/packageModel");
 const project = require("../model/projectModel");
 
 const vehicleTransportationSchema = new mongoose.Schema({
-  vehicleId: {
-    type: Number,
-    required: false
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,
@@ -40,7 +36,8 @@ const vehicleTransportationSchema = new mongoose.Schema({
     required: false
   },
   safeDelete:{
-    type: Boolean
+    type: Boolean,
+    default:false
   }
 }, { timestamps: true });
 

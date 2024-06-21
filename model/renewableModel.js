@@ -4,11 +4,6 @@ const package = require("../model/packageModel");
 const project = require("../model/projectModel");
 
 const energyRenewableSchema = new mongoose.Schema({
-  energyRenewableId: {
-    type: Number,
-    required: true,
-    unique: true
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,

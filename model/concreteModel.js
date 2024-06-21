@@ -6,10 +6,7 @@ const project = require("../model/projectModel");
 
 // Define the schema
 const concreteMixSchema = new Schema({
-  concreteMixID: {
-    type: Number,
-    required: false
-  },
+  
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,
@@ -73,7 +70,8 @@ const concreteMixSchema = new Schema({
     type: Number
   },
   safeDelete:{
-    type: Boolean
+    type: Boolean,
+    default:false
   }
 },{timestamps:true}
 );
