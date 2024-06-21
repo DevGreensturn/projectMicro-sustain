@@ -205,7 +205,7 @@ const updateNonRenewable = async (req, res) => {
 const deleteNonRenewable = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await nonRenewable.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await nonRenewable.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -292,7 +292,7 @@ const updateRenewable = async (req, res) => {
 const deleteRenewable = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await renwableModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await renwableModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -375,7 +375,7 @@ const updateSoldEnergy = async (req, res) => {
 const deleteSoldEnergy = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await soldModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await soldModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -461,7 +461,7 @@ const updateReductionEnergy = async (req, res) => {
 const deleteReductionEnergy = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await reductionEnergyModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await reductionEnergyModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -546,8 +546,8 @@ const updateWaterProvider = async (req, res) => {
 const deleteWaterProvider = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await waterProviderModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
-    return res.status(201).send({
+    const data = await waterProviderModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
+    return res.status(200).send({
       status: true,
       message: "Data has been deleted successfully",
     });
@@ -633,7 +633,7 @@ const updateBottleWater = async (req, res) => {
 const deleteBottleWater = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await bottleWaterModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await bottleWaterModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -719,7 +719,7 @@ const updateWaterTanker = async (req, res) => {
 const deleteWaterTanker = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await waterTankerModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await waterTankerModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -804,7 +804,7 @@ const updateConcreteMix = async (req, res) => {
 const deleteConcreteMix = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await concreteMixModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await concreteMixModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -889,7 +889,7 @@ const updateBuilding = async (req, res) => {
 const deleteBuilding = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await buildingModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await buildingModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -974,7 +974,7 @@ const updateWasteManagement = async (req, res) => {
 const deleteWasteManagement = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await wasteManagement.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await wasteManagement.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1060,7 +1060,7 @@ const updateDirectDisposal = async (req, res) => {
 const deleteDirectDisposal = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await disposaleModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await disposaleModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1145,7 +1145,7 @@ const updateDivertedDisposal = async (req, res) => {
 const deleteDivertedDisposal = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await divertedModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await divertedModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1231,7 +1231,7 @@ const updateWorkerTransportation = async (req, res) => {
 const deleteWorkerTransportation = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await workerTransportationModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await workerTransportationModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1312,7 +1312,7 @@ const updateSiteVehicle = async (req, res) => {
 const deleteSiteVehicle = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await siteModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await siteModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1393,7 +1393,7 @@ const updateBusinessTravel = async (req, res) => {
 const deleteBusinessTravel = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await businessModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await businessModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
@@ -1488,7 +1488,7 @@ const updateCommuting = async (req, res) => {
 const deleteCommuting = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await commutingModel.findByIdAndUpdate(id, {$set: {safeDeleted: true}}, { new: true });
+    const data = await commutingModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
