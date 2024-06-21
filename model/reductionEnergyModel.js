@@ -5,10 +5,6 @@ const package = require("../model/packageModel");
 const project = require("../model/projectModel");
 
 const energyReductionSchema = new Schema({
-  energyReductionID: {
-    type: Number,
-    required: false
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,

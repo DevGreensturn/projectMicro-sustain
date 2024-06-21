@@ -5,11 +5,6 @@ const package = require("../model/packageModel");
 const project = require("../model/projectModel");
 
 const utilityWaterProviderSchema = new Schema({
-  utilityProviderWaterID: {
-    type: Number,
-    required: true,
-    unique: true
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,

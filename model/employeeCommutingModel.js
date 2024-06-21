@@ -4,10 +4,6 @@ const package = require("../model/packageModel");
 const project = require("../model/projectModel");
 
 const employeeTransportationSchema = new mongoose.Schema({
-  employeeId: {
-    type: Number,
-    required:false
-  },
   packageId: {
     type: mongoose.Types.ObjectId,
     ref:package,
