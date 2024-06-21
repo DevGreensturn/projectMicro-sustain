@@ -22,7 +22,7 @@ const waterConsumptionSchema = new mongoose.Schema({
   },
   emissionInputId: {
     type: Number,
-    required: true
+    required: false
   },
   waterType: {
     type: String,

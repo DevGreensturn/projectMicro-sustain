@@ -14,6 +14,10 @@ const reportSchema = new mongoose.Schema({
     ref:project,
     required: false
   },
+  emissionInputId: {
+    type: Number,
+    required: false
+  },
   reportingMonthYear: {
     type: String,
     required: false
