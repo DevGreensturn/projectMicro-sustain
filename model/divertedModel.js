@@ -65,7 +65,7 @@ const DivertedDisposalSchema = new mongoose.Schema({
   quantity: {
     type: Number
   },
-  Unit: {
+  unit: {
     type: String
   },
   supportingDocument: {
