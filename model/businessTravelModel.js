@@ -33,8 +33,9 @@ const travelSchema = new mongoose.Schema({
     required: false
   },
   safeDelete:{
-    type: Boolean
-  }
+    type: Boolean,
+    default:false
+  },
 }, { timestamps: true });
 
 const Travel = mongoose.model('travelBusiness', travelSchema);

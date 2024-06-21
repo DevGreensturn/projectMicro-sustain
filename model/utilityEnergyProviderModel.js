@@ -55,9 +55,9 @@ const energyUtilityProviderSchema = new mongoose.Schema({
     type: String,
     enum: ['Kwh', 'Joule', 'Wh']
   },
-  safeDelete: {
+  safeDelete:{
     type: Boolean,
-    default: false
+    default:false
   },
   supportingDocuments: [{
     type: String,

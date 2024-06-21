@@ -97,8 +97,9 @@ const buildingMaterialSchema = new mongoose.Schema({
     type: Number
   },
   safeDelete:{
-    type: Boolean
-  }
+    type: Boolean,
+    default:false
+  },
 },
 {timestamps:true}
 );

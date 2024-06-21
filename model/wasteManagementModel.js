@@ -53,7 +53,11 @@ const wasteSchema = new mongoose.Schema({
   },
   supportingDocument: {
     type: String
-  }
+  },
+  safeDelete:{
+    type: Boolean,
+    default:false
+  },
 },{timestamps:true}
 );
 

@@ -70,7 +70,8 @@ const concreteMixSchema = new Schema({
     type: Number
   },
   safeDelete:{
-    type: Boolean
+    type: Boolean,
+    default:false
   }
 },{timestamps:true}
 );

@@ -12,8 +12,9 @@ const packageSchema = new mongoose.Schema({
         default:"BRONZE"
     },
     safeDelete:{
-        type: Boolean
-      }
+        type: Boolean,
+        default:false
+      },
 },
 {timestamps:true}
 );

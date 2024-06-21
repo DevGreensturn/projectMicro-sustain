@@ -36,8 +36,9 @@ const employeeTransportationSchema = new mongoose.Schema({
     required: false
   },
   safeDelete:{
-    type: Boolean
-  }
+    type: Boolean,
+    default:false
+  },
 }, { timestamps: true });
 
 const EmployeeTransportation = mongoose.model('EmployeeTransportation', employeeTransportationSchema);

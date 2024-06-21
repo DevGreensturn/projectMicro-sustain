@@ -71,8 +71,9 @@ const directedDisposalSchema = new mongoose.Schema({
   supportingDocument: {
     type: Buffer
   },
-  safeDelete: {
-    type: Boolean
+  safeDelete:{
+    type: Boolean,
+    default:false
   },
 },
 {timestamps:true}
