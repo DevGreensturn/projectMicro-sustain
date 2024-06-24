@@ -69,7 +69,7 @@ const directedDisposalSchema = new mongoose.Schema({
     type: String
   },
   supportingDocument: {
-    type: Buffer
+    type: String
   },
   safeDelete:{
     type: Boolean,
