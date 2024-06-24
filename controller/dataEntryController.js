@@ -848,6 +848,7 @@ const getBuilding = async (req, res) => {
     if (id) {
       result = await buildingModel.findOne({ _id: id, safeDelete: false });
     } else {
+      const skip = (page - 1) * limit;
       result = await buildingModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await buildingModel.countDocuments();
@@ -933,6 +934,7 @@ const getWasteManagement = async (req, res) => {
     if (id) {
       result = await wasteManagement.findOne({ _id: id, safeDelete: false });
     } else {
+      const skip = (page - 1) * limit;
       result = await wasteManagement.find(query).skip(skip).limit(limit);
     }
     const total_count = await wasteManagement.countDocuments();
@@ -1019,6 +1021,7 @@ const getDirectDisposal = async (req, res) => {
     if (id) {
       result = await disposaleModel.findOne({ _id: id, safeDelete: false });
     } else {
+      const skip = (page - 1) * limit;
       result = await disposaleModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await disposaleModel.countDocuments();
@@ -1104,6 +1107,7 @@ const getDivertedDisposal = async (req, res) => {
     if (id) {
       result = await divertedModel.findOne({ _id: id, safeDelete: false });
     } else {
+      const skip = (page - 1) * limit;
       result = await divertedModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await divertedModel.countDocuments();
@@ -1190,6 +1194,7 @@ const getWorkerTransportation = async (req, res) => {
     if (id) {
       result = await workerTransportationModel.findOne({ _id: id, safeDelete: false });
     } else {
+      const skip = (page - 1) * limit;
       result = await workerTransportationModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await workerTransportationModel.countDocuments();
@@ -1275,6 +1280,7 @@ const getSiteVehicle = async (req, res) => {
     if (id) {
       result = await siteModel.findOne({ _id: id, safeDelete: false });
     } else {
+      const skip = (page - 1) * limit;
       result = await siteModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await siteModel.countDocuments();
@@ -1356,6 +1362,7 @@ const getBusinessTravel = async (req, res) => {
     if (id) {
       result = await siteModel.findOne({ _id: id, safeDelete: false });
     } else {
+      const skip = (page - 1) * limit;
       result = await siteModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await siteModel.countDocuments();

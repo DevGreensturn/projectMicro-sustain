@@ -1,4 +1,3 @@
-//
 const { ObjectId } = require("mongodb"); // Import ObjectId from MongoDB driver
 const energyProvider = require("../model/utilityEnergyProviderModel");
 const nonRenewable = require("../model/nonRenewableModel");
@@ -226,7 +225,7 @@ const energyPieConsumption = async (req, res) => {
 };
 
 const energyLineConsumption = async (req, res) => {
-  let { dateRange, projectId, interval, unit } = req.body;
+  let { dateRange, projectId, interval, unit, packageId } = req.body;
   try {
     let matchQuery = { projectId: projectId, packageId: packageId };
     let groupId;
@@ -531,7 +530,7 @@ const waterPieConsumption = async (req, res) => {
 };
 
 const waterLineConsumption = async (req, res) => {
-  let { dateRange, projectId, interval, unit } = req.body;
+  let { dateRange, projectId, interval, unit, packageId } = req.body;
   try {
     let matchQuery = { projectId: projectId, packageId: packageId };
     let groupId;
@@ -559,19 +558,19 @@ const waterLineConsumption = async (req, res) => {
           .status(400)
           .send({ status: false, message: "Invalid interval specified" });
     }
-
     const unitConversionFactor = (unit) => {
       switch (unit) {
-        case "Kwh":
-          return 1; // kWh is the base unit
-        case "Wh":
-          return 1000; // 1 kWh = 1000 Wh
-        case "Joule":
-          return 3600000; // 1 kWh = 3600000 Joules
+        case "Litre":
+          return 1; // Liters is the base unit
+        case "USGallon":
+          return 0.264172; // 1 Liter = 0.264172 US Gallons
+        case "CubicMeter":
+          return 0.001; // 1 Liter = 0.001 Cubic Meters
         default:
-          return 1; // Default to kWh if unit is not specified
+          return 1; // Default to Liters if unit is not specified
       }
     };
+    
 
     const conversionPipeline = (consumptionField) => [
       { $match: matchQuery },
@@ -805,6 +804,15 @@ const buildingMaterialPieConsumption = async (req, res) => {
     return res.status(500).send({ error: error.message, status: false });
   }
 };
+
+const buildingMaterialLineConsumption = async (req, res) => {
+  try {
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: error.message, status: false })
+  }
+}
 
 const divertedDisposalPie = async (req, res) => {
   let { dateRange, projectId, packageId } = req.body;
