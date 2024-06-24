@@ -762,6 +762,7 @@ const getConcreteMix = async (req, res) => {
     if (id) {
       result = await concreteMixModel.findOne({ _id: id, safeDelete: false });
     } else {
+      const skip = (page - 1) * limit;
       result = await concreteMixModel.find(query).skip(skip).limit(limit);
     }
     const total_count = await concreteMixModel.countDocuments();
