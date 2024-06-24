@@ -39,7 +39,7 @@ const soldEnergySchema = new Schema({
     enum: ['Kwh', 'Joule', 'Wh']
   },
   supportingDocument: {
-    type: Buffer
+    type: String
   },
   safeDelete:{
     type: Boolean,
