@@ -22,7 +22,7 @@ const utilityWaterProviderSchema = new Schema({
   },
   emissionInputId: {
     type: Number,
-    required: true
+    required: false
   },
   meterNo: {
     type: Number

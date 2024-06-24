@@ -22,7 +22,7 @@ const buildingMaterialSchema = new mongoose.Schema({
   },
   emissionInputID: {
     type: Number,
-    required: true
+    required: false
   },
   materialType: {
     type: String,

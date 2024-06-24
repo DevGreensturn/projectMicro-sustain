@@ -24,7 +24,7 @@ const concreteMixSchema = new Schema({
   },
   emissionInputID: {
     type: Number,
-    required: true
+    required: false
   },
   concreteMixesNo: {
     type: String

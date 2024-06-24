@@ -21,7 +21,7 @@ const employeeTransportationSchema = new mongoose.Schema({
   },
   emissionInputId: {
     type: Number,
-    required: true
+    required: false
   },
   numberOfEmployees: {
     type: Number,

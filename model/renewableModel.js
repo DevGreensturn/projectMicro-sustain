@@ -21,7 +21,7 @@ const energyRenewableSchema = new mongoose.Schema({
   },
   emissionInputId: {
     type: Number,
-    required: true
+    required: false
   },
   type: {
     type: String,

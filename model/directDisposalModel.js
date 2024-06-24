@@ -27,7 +27,7 @@ const directedDisposalSchema = new mongoose.Schema({
   },
   emissionInputId: {
     type: Number,
-    required: true
+    required: false
   },
   mainCollectionCompany:{
     type: String,

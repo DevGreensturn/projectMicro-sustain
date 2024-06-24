@@ -28,7 +28,7 @@ const DivertedDisposalSchema = new mongoose.Schema({
   },
   emissionInputId: {
     type: Number,
-    required: true
+    required: false
   },
   mainCollectionCompany:{
     type: String,
@@ -65,7 +65,7 @@ const DivertedDisposalSchema = new mongoose.Schema({
   quantity: {
     type: Number
   },
-  Unit: {
+  unit: {
     type: String
   },
   supportingDocument: {

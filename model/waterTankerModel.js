@@ -22,7 +22,7 @@ const waterConsumptionSchema = new mongoose.Schema({
   },
   emissionInputId: {
     type: Number,
-    required: true
+    required: false
   },
   waterType: {
     type: String,
@@ -44,7 +44,7 @@ const waterConsumptionSchema = new mongoose.Schema({
   waterConsumption: {
     type: Number
   },
-  Unit: {
+  unit: {
     type: String,
     enum: [
       "US Gallon",
