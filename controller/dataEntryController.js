@@ -232,7 +232,7 @@ const createRenewable = async (req, res) => {
 };
 const getRenewable = async (req, res) => {
   let { id } = req.params;
-  let { page, limit } = req.query;
+  let { page, limit,projectId } = req.query;
   page = page ? parseInt(page) : 1;
   limit = limit ? parseInt(limit) : 10;
   try {
@@ -262,6 +262,7 @@ const getRenewable = async (req, res) => {
       total_count: total_count,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).send(error.message);
   }
 };

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const monthlyReport = require("../model/monthlyReportModel");
 const package = require("../model/packageModel");
 const project = require("../model/projectModel");
+const supplierSubcontractor = require("../model/supplierModel");
 
 // Define the schema
 const buildingMaterialSchema = new mongoose.Schema({
@@ -60,7 +61,9 @@ const buildingMaterialSchema = new mongoose.Schema({
     required: true
   },
   supplierSubcontractor: {
-    type: String
+    type: mongoose.Types.ObjectId,
+    ref:supplierSubcontractor,
+    required: false
   },
   roadDistance: {
     type: Number
@@ -84,7 +87,7 @@ const buildingMaterialSchema = new mongoose.Schema({
     type: Number
   },
   supportingDocument: {
-    type: Buffer
+    type: String
   },
   quantificationMethod: {
     type: String,
