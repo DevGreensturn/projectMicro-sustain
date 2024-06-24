@@ -7,7 +7,7 @@ const waterProviderModel = require("../model/utilityWaterProviderModel");
 const bottleWaterModel = require("../model/bottleWaterModel");
 const waterTankerModel = require("../model/waterTankerModel");
 const concreteMixModel = require("../model/concreteModel");
-const buildingModel = require("../model/buildingModel");
+const buildingSchemas = require("../model/buildingModel");
 const wasteManagement = require("../model/wasteManagementModel");
 const divertedModel = require("../model/divertedModel");
 const disposaleModel = require("../model/directDisposalModel");
@@ -819,7 +819,7 @@ const deleteConcreteMix = async (req, res) => {
 //Building-Materials
 const createBuilding = async (req, res) => {
   try {
-    const data = new buildingModel(req.body);
+    const data = new buildingSchemas(req.body);
     const result = await data.save();
 
     return res.status(201).send({
@@ -847,12 +847,16 @@ const getBuilding = async (req, res) => {
       query.projectId = projectId;
     }
     if (id) {
-      result = await buildingModel.findOne({ _id: id, safeDelete: false });
+      result = await buildingSchemas.findOne({ _id: id, safeDelete: false })
+        .populate({ path: 'supplierSubcontractor', select: 'name' });
     } else {
       const skip = (page - 1) * limit;
-      result = await buildingModel.find(query).skip(skip).limit(limit);
+      result = await buildingSchemas.find(query)
+      .populate({ path: 'supplierSubcontractor', select: 'name' })
+        .skip(skip)
+        .limit(limit);
     }
-    const total_count = await buildingModel.countDocuments();
+    const total_count = await buildingSchemas.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
@@ -870,11 +874,11 @@ const updateBuilding = async (req, res) => {
     const { id } = req.params;
 
     const options = { new: true };
-    const findData = await buildingModel.findById(id);
+    const findData = await buildingSchemas.findById(id);
     if (!findData) {
       return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await buildingModel.findByIdAndUpdate(
+      const result = await buildingSchemas.findByIdAndUpdate(
         id,
         req.body,
         options
@@ -892,7 +896,7 @@ const updateBuilding = async (req, res) => {
 const deleteBuilding = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await buildingModel.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
+    const data = await buildingSchema.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",

@@ -207,7 +207,7 @@ router.get('/renewable/:id?', auth.authenticateToken, dataEntry.getRenewable);
  *       500:
  *         description: Server error
  */
-router.patch('/energy/:id', auth.authenticateToken, dataEntry.deleteEnergyProvider);
+router.patch('/renewable/:id', auth.authenticateToken, dataEntry.deleteRenewable);
 
 
 // NON-RENEWABLE
