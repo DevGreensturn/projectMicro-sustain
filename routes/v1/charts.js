@@ -12,7 +12,7 @@ router.post("/water/line",chartsInstance.waterLineConsumption)
 router.post("/concrete/pie",chartsInstance.concretePieConsumption);
 
 router.post("/building/pie", chartsInstance.buildingMaterialPieConsumption);
-router.post("/building/line", chartsInstance.buildingMaterialLineConsumption);
+// router.post("/building/line", chartsInstance.buildingMaterialLineConsumption);
 router.post("/directed-disposal/pie", chartsInstance.directedDisposalPie);
 router.post("/diverted/pie", chartsInstance.divertedDisposalPie)
 
