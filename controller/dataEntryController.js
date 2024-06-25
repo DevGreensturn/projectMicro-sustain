@@ -896,7 +896,7 @@ const updateBuilding = async (req, res) => {
 const deleteBuilding = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await buildingSchema.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
+    const data = await buildingSchemas.findByIdAndUpdate(id, {$set: {safeDelete: true}}, { new: true });
     return res.status(201).send({
       status: true,
       message: "Data has been deleted successfully",
