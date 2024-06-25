@@ -312,7 +312,7 @@ const energyLineConsumption = async (req, res) => {
         $project: {
           _id: 0, // Hide the default _id field
           result: "$_id", // Rename _id to newIdName
-          totalConsumption: 1, // Include the totalConsumption field
+          totalConsumption: 1, // Include the totalConsumption 
         },
       },
     ];
@@ -806,13 +806,184 @@ const buildingMaterialPieConsumption = async (req, res) => {
 };
 
 const buildingMaterialLineConsumption = async (req, res) => {
+  let { projectId, interval, packageId } = req.body;
+
   try {
-    
+    let matchQuery = { projectId: new ObjectId(projectId) };
+    if (packageId) {
+      matchQuery.packageId = new ObjectId(packageId);
+    }
+
+    console.log("Match Query:", JSON.stringify(matchQuery, null, 2));
+
+    let groupId;
+    switch (interval) {
+      case "monthly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        };
+        break;
+      case "quarterly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          quarter: { $ceil: { $divide: [{ $month: "$createdAt" }, 3] } },
+        };
+        break;
+      case "yearly":
+        groupId = { year: { $year: "$createdAt" } };
+        break;
+      default:
+        return res.status(400).send({ status: false, message: "Invalid interval specified" });
+    }
+
+    console.log("Group ID:", JSON.stringify(groupId, null, 2));
+
+    const pipeline = [
+      { $match: matchQuery }, 
+      {
+        $group: {
+          _id: { materialSource: "$materialSource", ...groupId },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.materialSource",
+          total: { $sum: "$count" },
+
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalDocuments: { $sum: "$total" },
+          sources: { $push: { materialSource: "$_id", total: "$total", details: "$details" } },
+        },
+      },
+      {
+        $unwind: "$sources",
+      },
+      {
+        $project: {
+          materialSource: "$sources.materialSource",
+          percentage: {
+            $multiply: [
+              { $divide: ["$sources.total", "$totalDocuments"] },
+              100,
+            ],
+          },
+          
+        },
+      },
+      {
+        $sort: { "materialSource": 1 }
+      }
+    ];
+
+    console.log("Aggregation Pipeline:", JSON.stringify(pipeline, null, 2));
+
+    const result = await buildingModel.aggregate(pipeline);
+    console.log("Aggregation Result:", result);
+
+    return res.status(200).json({
+      status: true,
+      message: "Building Material Percentage by Source over Time",
+      result: result,
+    });
+
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: error.message, status: false })
+    return res.status(500).json({ error: error.message, status: false });
   }
 }
+
+const materialPurchasedTypeLine = async (req, res) => {
+  let { projectId, interval, packageId } = req.body;
+  try {
+    let matchQuery = { projectId: new ObjectId(projectId) };
+    if (packageId) {
+      matchQuery.packageId = new ObjectId(packageId);
+    }
+    console.log("Match Query:", JSON.stringify(matchQuery, null, 2));
+
+    let groupId;
+    switch (interval) {
+      case "monthly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        };
+        break;
+      case "quarterly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          quarter: { $ceil: { $divide: [{ $month: "$createdAt" }, 3] } },
+        };
+        break;
+      case "yearly":
+        groupId = { year: { $year: "$createdAt" } };
+        break;
+      default:
+        return res.status(400).send({ status: false, message: "Invalid interval specified" });
+    }
+    console.log("Group ID:", JSON.stringify(groupId, null, 2));
+
+    const pipeline = [
+      { $match: matchQuery },
+      {
+        $group: {
+          _id: { materialType: "$materialType", ...groupId },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.materialType",
+          total: { $sum: "$count" },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalDocuments: { $sum: "$total" },
+          sources: { $push: { materialType: "$_id", total: "$total" } },
+        },
+      },
+      {
+        $unwind: "$sources",
+      },
+      {
+        $project: {
+          materialType: "$sources.materialType",
+          percentage: {
+            $multiply: [
+              { $divide: ["$sources.total", "$totalDocuments"] },
+              100,
+            ],
+          },
+        },
+      },
+      {
+        $sort: { materialType: 1 }
+      }
+    ];
+    console.log("Aggregation Pipeline:", JSON.stringify(pipeline, null, 2));
+
+    const result = await buildingModel.aggregate(pipeline);
+    console.log("Aggregation Result:", result);
+
+    return res.status(200).json({
+      status: true,
+      message: "Building Material Percentage by Source over Time",
+      interval: interval,
+      result: result,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: error.message, status: false });
+  }
+};
 
 const divertedDisposalPie = async (req, res) => {
   let { dateRange, projectId, packageId } = req.body;
@@ -1196,6 +1367,197 @@ const transportationEmissionPie = async (req, res) => {
   }
 };
 
+const solidWasteLine = async (req, res) => {
+  let { projectId, packageId, interval } = req.body;
+  try {
+    let matchQuery = { projectId: new ObjectId(projectId), wasteType: 'solid' };
+    if (packageId) {
+      matchQuery.packageId = new ObjectId(packageId);
+    }
+
+    let groupId;
+    switch (interval) {
+      case 'monthly':
+        groupId = {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+        };
+        break;
+      case 'quarterly':
+        groupId = {
+          year: { $year: '$createdAt' },
+          quarter: { $ceil: { $divide: [{ $month: '$createdAt' }, 3] } },
+        };
+        break;
+      case 'yearly':
+        groupId = { year: { $year: '$createdAt' } };
+        break;
+      default:
+        return res.status(400).send({ status: false, message: 'Invalid interval specified' });
+    }
+
+    const pipeline = [
+      { $match: matchQuery },
+      {
+        $group: {
+          _id: { directedOperationType: '$directedOperationType', ...groupId },
+          totalQuantity: { $sum: '$quantity' },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalOverallQuantity: { $sum: '$totalQuantity' },
+          data: {
+            $push: {
+              directedOperationType: '$_id.directedOperationType',
+              year: '$_id.year',
+              month: '$_id.month',
+              quarter: '$_id.quarter',
+              totalQuantity: '$totalQuantity',
+            },
+          },
+        },
+      },
+      { $unwind: '$data' },
+      {
+        $project: {
+          _id: 0,
+          directedOperationType: '$data.directedOperationType',
+          year: '$data.year',
+          month: { $ifNull: ['$data.month', null] },
+          quarter: { $ifNull: ['$data.quarter', null] },
+          totalQuantity: '$data.totalQuantity',
+          percentage: {
+            $multiply: [{ $divide: ['$data.totalQuantity', '$totalOverallQuantity'] }, 100],
+          },
+        },
+      },
+      {
+        $sort: { 
+          year: 1, 
+          quarter: 1, 
+          month: 1, 
+          directedOperationType: 1 
+        }
+      }
+    ];
+
+    const results = await disposaleModel.aggregate(pipeline);
+
+    return res.status(200).send({
+      status: true,
+      message: 'Solid Waste Consumption',
+      data: results,
+      interval: interval
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
+
+const liquidWasteLine = async (req, res) => {
+  let { projectId, packageId, interval } = req.body;
+  try {
+    let matchQuery = { projectId: new ObjectId(projectId), wasteType: 'liquid' };
+    if (packageId) {
+      matchQuery.packageId = new ObjectId(packageId);
+    }
+
+    let groupId;
+    switch (interval) {
+      case 'monthly':
+        groupId = {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+        };
+        break;
+      case 'quarterly':
+        groupId = {
+          year: { $year: '$createdAt' },
+          quarter: { $ceil: { $divide: [{ $month: '$createdAt' }, 3] } },
+        };
+        break;
+      case 'yearly':
+        groupId = { year: { $year: '$createdAt' } };
+        break;
+      default:
+        return res.status(400).send({ status: false, message: 'Invalid interval specified' });
+    }
+
+    const pipeline = [
+      { $match: matchQuery },
+      {
+        $group: {
+          _id: { directedOperationType: '$directedOperationType', ...groupId },
+          totalQuantity: { $sum: '$quantity' },
+        },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          totalQuantity: { $sum: '$totalQuantity' },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalOverallQuantity: { $sum: '$totalQuantity' },
+          data: {
+            $push: {
+              directedOperationType: '$_id.directedOperationType',
+              year: '$_id.year',
+              month: '$_id.month',
+              quarter: '$_id.quarter',
+              totalQuantity: '$totalQuantity',
+            },
+          },
+        },
+      },
+      { $unwind: { path: '$data', preserveNullAndEmptyArrays: true } },
+      {
+        $project: {
+          _id: 0,
+          directedOperationType: '$data.directedOperationType',
+          year: '$data.year',
+          month: { $ifNull: ['$data.month', null] },
+          quarter: { $ifNull: ['$data.quarter', null] },
+          totalQuantity: { $ifNull: ['$data.totalQuantity', 0] },
+          percentage: {
+            $multiply: [
+              { $cond: [{ $eq: ['$totalOverallQuantity', 0] }, 0, { $divide: ['$data.totalQuantity', '$totalOverallQuantity'] }] },
+              100,
+            ],
+          },
+        },
+      },
+      {
+        $sort: { 
+          year: 1, 
+          quarter: 1, 
+          month: 1, 
+          directedOperationType: 1 
+        }
+      }
+    ];
+
+    const results = await disposaleModel.aggregate(pipeline);
+
+    return res.status(200).send({
+      status: true,
+      message: 'Liquid Waste Consumption',
+      data: results,
+      interval: interval
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
+
 module.exports = {
   energyPieConsumption,
   energyLineConsumption,
@@ -1203,10 +1565,14 @@ module.exports = {
   waterLineConsumption,
   concretePieConsumption,
   buildingMaterialPieConsumption,
+  buildingMaterialLineConsumption,
   divertedDisposalPie,
   directedDisposalPie,
   transportationFuelPie,
   fuelConsumptionPie,
   contrunctionEmissionPie,
   transportationEmissionPie,
+  materialPurchasedTypeLine,
+  solidWasteLine, 
+  liquidWasteLine
 };
