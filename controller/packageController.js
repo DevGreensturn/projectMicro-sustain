@@ -35,7 +35,7 @@ const getPackageData = async (req, res) => {
     if(id){
       packages = await packageModel.findById(id);
     }else{
-      packages = await packageModel.find();
+      packages = await packageModel.find().sort({createdAt:-1});
     }
     return res.status(200).send({
       status: true,

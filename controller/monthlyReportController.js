@@ -18,7 +18,7 @@ const getMonthlyData = async (req, res) => {
       .populate({
         path: 'reportedBy',
         select: 'firstName lastName email' // Replace with the actual fields you want from the userDetails collection
-      });
+      }).sort({createdAt:-1});
     } else if(projectId || packageId) {
       result = await monthlyReport.find({ projectId:projectId,packageId:packageId,safeDelete:false })
         .populate({
@@ -46,7 +46,7 @@ const getMonthlyData = async (req, res) => {
         .populate({
           path: 'reportedBy',
           select: 'firstName lastName email' // Replace with the actual fields you want from the userDetails collection
-        });
+        }).sort({createdAt:-1});
     }
     return res.status(200).send({
       status: true,

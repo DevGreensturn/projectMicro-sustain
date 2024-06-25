@@ -39,7 +39,8 @@ const getProjectData = async (req, res) => {
         .find(query)  // Apply the query here
         .skip(skip)
         .limit(limit)
-        .populate("projectPackageId");
+        .populate("projectPackageId")
+        .sort({createdAt:-1});
     }
 
     const total_count = await projectModel.countDocuments(query);
