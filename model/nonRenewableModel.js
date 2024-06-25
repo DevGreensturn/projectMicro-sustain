@@ -46,7 +46,10 @@ const energyNonRenewableSchema = new mongoose.Schema({
     type: Number
   },
   supportingDocument: {
-    type: Buffer
+    type: String
+  },
+  volume: {
+    type: String
   },
   noOfTrips: {
     type: Number
