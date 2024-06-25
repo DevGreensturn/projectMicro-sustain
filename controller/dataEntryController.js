@@ -41,7 +41,7 @@ const getEnergyProvider = async (req, res) => {
   try {
     let result;
     const query = {
-      safeDelete: false, 
+      safeDelete: false,
     };
 
     if (projectId) {
@@ -66,7 +66,8 @@ const getEnergyProvider = async (req, res) => {
       result = await energyProvider
         .find(query)
         .skip(skip)
-        .limit(limit);
+        .limit(limit)
+        .sort({createdAt:-1});
       const total_count = await energyProvider.countDocuments(query);
       return res.status(200).send({
         status: true,
@@ -162,7 +163,7 @@ const getNonRenewable = async (req, res) => {
       result = await nonRenewable.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await nonRenewable.find(query).skip(skip).limit(limit);
+      result = await nonRenewable.find(query).skip(skip).limit(limit).sort({createdAt:-1});;
     }
     const total_count = await nonRenewable.countDocuments();
 
@@ -250,7 +251,7 @@ const getRenewable = async (req, res) => {
       result = await renwableModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await renwableModel.find(query).skip(skip).limit(limit);
+      result = await renwableModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});;
     }
     const total_count = await renwableModel.countDocuments();
     return res.status(200).send({
@@ -338,7 +339,7 @@ const getSoldEnergy = async (req, res) => {
       result = await soldModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await soldModel.find(query).skip(skip).limit(limit);
+      result = await soldModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await soldModel.countDocuments();
     return res.status(200).send({
@@ -420,7 +421,7 @@ const getReductionEnergy = async (req, res) => {
       result = await reductionEnergyModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await reductionEnergyModel.find(query).skip(skip).limit(limit);
+      result = await reductionEnergyModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await reductionEnergyModel.countDocuments();
     return res.status(200).send({
@@ -505,7 +506,7 @@ const getWaterProvider = async (req, res) => {
       result = await waterProviderModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await waterProviderModel.find(query).skip(skip).limit(limit);
+      result = await waterProviderModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await waterProviderModel.countDocuments();
     return res.status(200).send({
@@ -591,7 +592,7 @@ const getBottleWater = async (req, res) => {
       result = await bottleWaterModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await bottleWaterModel.find(query).skip(skip).limit(limit);
+      result = await bottleWaterModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await bottleWaterModel.countDocuments();
 
@@ -678,7 +679,7 @@ const getWaterTanker = async (req, res) => {
       result = await waterTankerModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await waterTankerModel.find(query).skip(skip).limit(limit);
+      result = await waterTankerModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await waterTankerModel.countDocuments();
     return res.status(200).send({
@@ -764,7 +765,7 @@ const getConcreteMix = async (req, res) => {
       result = await concreteMixModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await concreteMixModel.find(query).skip(skip).limit(limit);
+      result = await concreteMixModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await concreteMixModel.countDocuments();
     return res.status(200).send({
@@ -854,7 +855,8 @@ const getBuilding = async (req, res) => {
       result = await buildingSchemas.find(query)
       .populate({ path: 'supplierSubcontractor', select: 'name' })
         .skip(skip)
-        .limit(limit);
+        .limit(limit)
+        .sort({createdAt:-1});
     }
     const total_count = await buildingSchemas.countDocuments();
     return res.status(200).send({
@@ -940,7 +942,7 @@ const getWasteManagement = async (req, res) => {
       result = await wasteManagement.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await wasteManagement.find(query).skip(skip).limit(limit);
+      result = await wasteManagement.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await wasteManagement.countDocuments();
     return res.status(200).send({
@@ -1027,7 +1029,7 @@ const getDirectDisposal = async (req, res) => {
       result = await disposaleModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await disposaleModel.find(query).skip(skip).limit(limit);
+      result = await disposaleModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await disposaleModel.countDocuments();
     return res.status(200).send({
@@ -1113,7 +1115,7 @@ const getDivertedDisposal = async (req, res) => {
       result = await divertedModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await divertedModel.find(query).skip(skip).limit(limit);
+      result = await divertedModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await divertedModel.countDocuments();
     return res.status(200).send({
@@ -1200,7 +1202,7 @@ const getWorkerTransportation = async (req, res) => {
       result = await workerTransportationModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await workerTransportationModel.find(query).skip(skip).limit(limit);
+      result = await workerTransportationModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await workerTransportationModel.countDocuments();
     return res.status(200).send({
@@ -1286,7 +1288,7 @@ const getSiteVehicle = async (req, res) => {
       result = await siteModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await siteModel.find(query).skip(skip).limit(limit);
+      result = await siteModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await siteModel.countDocuments();
     return res.status(200).send({
@@ -1368,7 +1370,7 @@ const getBusinessTravel = async (req, res) => {
       result = await siteModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await siteModel.find(query).skip(skip).limit(limit);
+      result = await siteModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
     const total_count = await siteModel.countDocuments();
     return res.status(200).send({
@@ -1458,7 +1460,7 @@ const getCommuting = async (req, res) => {
       });
     } else {
       const skip = (page - 1) * limit;
-      result = await commutingModel.find(query).skip(skip).limit(limit);
+      result = await commutingModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
       const total_count = await commutingModel.countDocuments();
       return res.status(200).send({
         status: true,
