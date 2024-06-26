@@ -1339,7 +1339,7 @@ const deleteSiteVehicle = async (req, res) => {
 //Site-Vehicle
 const createBusinessTravel = async (req, res) => {
   try {
-    const data = new siteModel(req.body);
+    const data = new businessModel(req.body);
     const result = await data.save();
 
     return res.status(201).send({
@@ -1367,12 +1367,12 @@ const getBusinessTravel = async (req, res) => {
       query.projectId = projectId;
     }
     if (id) {
-      result = await siteModel.findOne({ _id: id, safeDelete: false });
+      result = await businessModel.findOne({ _id: id, safeDelete: false });
     } else {
       const skip = (page - 1) * limit;
-      result = await siteModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
+      result = await businessModel.find(query).skip(skip).limit(limit).sort({createdAt:-1});
     }
-    const total_count = await siteModel.countDocuments();
+    const total_count = await businessModel.countDocuments();
     return res.status(200).send({
       status: true,
       message: "Get Data",
@@ -1390,11 +1390,11 @@ const updateBusinessTravel = async (req, res) => {
     const { id } = req.params;
 
     const options = { new: true };
-    const findData = await siteModel.findById(id);
+    const findData = await businessModel.findById(id);
     if (!findData) {
       return res.status(404).send({ message: "data not found", status: false });
     } else {
-      const result = await siteModel.findByIdAndUpdate(id, req.body, options);
+      const result = await businessModel.findByIdAndUpdate(id, req.body, options);
       return res.status(200).send({
         status: true,
         message: "Data has been updated",

@@ -25,11 +25,11 @@ const travelSchema = new mongoose.Schema({
     required: false
   },
   numberOfTravellersByAirplane: {
-    type: Number,
+    type: String,
     required: false
   },
   distanceTravelledByOneTraveller: {
-    type: Number,
+    type: String,
     required: false
   },
   safeDelete:{
