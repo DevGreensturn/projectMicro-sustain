@@ -23,6 +23,7 @@ router.post("/fuel-consumption/pie",chartsInstance.fuelConsumptionPie)
 
 // WASTE MANAGEMENT
 router.post("/waste-solid/line", chartsInstance.solidWasteLine);
-router.post("/waste-liquid/line",chartsInstance.liquidWasteLine)
+router.post("/waste-liquid/line",chartsInstance.liquidWasteLine);
+router.post("/waste-directed/line", chartsInstance.solidWasteDirectedLine)
 
 module.exports = router;

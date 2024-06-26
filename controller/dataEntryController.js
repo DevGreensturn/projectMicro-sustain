@@ -1169,6 +1169,7 @@ const deleteDivertedDisposal = async (req, res) => {
 
 //Work - Transport
 const createWorkerTransportation = async (req, res) => {
+  console.log(req.body)
   try {
     const data = new workerTransportationModel(req.body);
     const result = await data.save();
@@ -1179,6 +1180,7 @@ const createWorkerTransportation = async (req, res) => {
       response: result,
     });
   } catch (error) {
+    console.error(error)
     return res.status(500).send({ message: error.message, success: 0 });
   }
 };
