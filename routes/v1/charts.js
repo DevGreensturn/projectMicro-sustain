@@ -12,12 +12,17 @@ router.post("/water/line",chartsInstance.waterLineConsumption)
 router.post("/concrete/pie",chartsInstance.concretePieConsumption);
 
 router.post("/building/pie", chartsInstance.buildingMaterialPieConsumption);
-// router.post("/building/line", chartsInstance.buildingMaterialLineConsumption);
+router.post("/building/line", chartsInstance.buildingMaterialLineConsumption);
+router.post("/building-material/line", chartsInstance.materialPurchasedTypeLine)
 router.post("/directed-disposal/pie", chartsInstance.directedDisposalPie);
 router.post("/diverted/pie", chartsInstance.divertedDisposalPie)
 
 // FUEL CONSUMPTION
 router.post("/transportation/pie", chartsInstance.transportationFuelPie)
 router.post("/fuel-consumption/pie",chartsInstance.fuelConsumptionPie)
+
+// WASTE MANAGEMENT
+router.post("/waste-solid/line", chartsInstance.solidWasteLine);
+router.post("/waste-liquid/line",chartsInstance.liquidWasteLine)
 
 module.exports = router;
