@@ -1612,51 +1612,66 @@ const solidWasteDirectedLine = async (req, res) => {
         break;
       default:
         return res.status(400).send({ status: false, message: "Invalid interval specified" });
-      }
+    }
 
-      const pipeline = [
-        { $match: matchQuery }, 
-        {
-          $group: {
-            _id: {
-              directedOperationType: "$directedOperationType",
-              ...groupId 
-            },
-            totalCount: { $sum: 1 } 
-          }
-        },
-        {
-          $group: {
-            _id: "$_id", // Preserve the previous _id structure
-            totalCount: { $sum: "$totalCount" }, // Calculate total count across all types
-            types: {
-              $push: {
-                type: "$_id.directedOperationType",
-                count: "$totalCount" // Use the totalCount as count for each type
-              }
+    const pipeline = [
+      { $match: matchQuery }, 
+      {
+        $group: {
+          _id: {
+            ...groupId,
+            directedOperationType: "$directedOperationType",
+          },
+          count: { $sum: 1 } 
+        }
+      },
+      {
+        $group: {
+          _id: groupId,
+          types: {
+            $push: {
+              type: "$_id.directedOperationType",
+              count: "$count"
             }
-          }
-        },
-       
-      ];
-      
-  
-      const results = await disposaleModel.aggregate(pipeline);
-  
-      console.log("Aggregation results:", results);
+          },
+          totalCount: { $sum: "$count" }
+        }
+      },
+      {
+        $unwind: "$types"
+      },
+      {
+        $project: {
+          // _id: 0,
+          // interval: "$_id",
+          directedOperationType: "$types.type",
+          count: "$types.count",
+          totalCount: 1,
+          percentage: { $multiply: [{ $divide: ["$types.count", "$totalCount"] }, 100] }
+        }
+      }
+    ];
 
+    const results = await disposaleModel.aggregate(pipeline);
+
+    console.log("Aggregation results:", results);
 
     return res.status(200).json({
       status: true,
       message: "Solid Waste Directed Operation Type Percentages",
-      data: results,
-      
+      data: results.map(result => ({
+        directedOperationType: result.directedOperationType,
+        count: result.count,
+        percentage: result.percentage,
+        interval: interval
+      }))
     });
   } catch (error) {
     console.error("Error in solidWasteDirectedLine:", error);
     return res.status(500).json({ error: error.message, status: false });
   }
 };
+
 
 const transportationFuelLine = async (req, res) => {
   try {
