@@ -1674,10 +1674,87 @@ const solidWasteDirectedLine = async (req, res) => {
 
 
 const transportationFuelLine = async (req, res) => {
+  let { projectId, packageId, interval } = req.body;
   try {
+    let matchQuery = {
+      projectId: new ObjectId(projectId),
+      packageId: new ObjectId(packageId)
+    };
+
+    let groupId;
+    switch (interval) {
+      case "monthly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        };
+        break;
+      case "quarterly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          quarter: { $ceil: { $divide: [{ $month: "$createdAt" }, 3] } },
+        };
+        break;
+      case "yearly":
+        groupId = { year: { $year: "$createdAt" } };
+        break;
+      default:
+        return res.status(400).json({ status: false, message: "Invalid interval specified" });
+    }
+
+    const models = [
+      siteModel,
+      buildingModel,
+      concreteMixModel,
+      waterTankerModel,
+      workerTransportationModel,
+      commutingModel,
+      siteModel,
+      businessModel
+    ];
+
+    const pipeline = [
+      { $match: matchQuery },
+      {
+        $group: {
+          _id: null,
+          totalFuelUsed: { $sum: "$fuelUsed" }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          totalFuelUsed: 1
+        }
+      }
+    ];
+
+    let fuelConsumptionPromises = models.map(async (model) => {
+      const result = await model.aggregate(pipeline);
+      return {
+        model: model.collection.name,
+        totalFuelUsed: result.length ? result[0].totalFuelUsed : 0
+      };
+    });
+
+    let fuelConsumptions = await Promise.all(fuelConsumptionPromises);
+    let totalFuelUsed = fuelConsumptions.reduce((acc, curr) => acc + curr.totalFuelUsed, 0);
+
+    let result = fuelConsumptions.map(fc => ({
+      model: fc.model,
+      percentage: totalFuelUsed > 0 ? 
+        ((fc.totalFuelUsed / totalFuelUsed) * 100).toFixed(2) : 
+        "0.00"
+    }));
+
+    return res.status(200).json({
+      status: true,
+      message: "Fuel consumption percentage by model",
+      result: result
+    });
   } catch (error) {
     console.error(error);
-    return res.status(500).sent({ error: error.message, status: false });
+    return res.status(500).json({ error: error.message, status: false });
   }
 };
 

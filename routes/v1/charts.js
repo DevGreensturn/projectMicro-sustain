@@ -20,6 +20,7 @@ router.post("/diverted/pie", chartsInstance.divertedDisposalPie)
 // FUEL CONSUMPTION
 router.post("/transportation/pie", chartsInstance.transportationFuelPie)
 router.post("/fuel-consumption/pie",chartsInstance.fuelConsumptionPie)
+router.post("/tansporatation/line", chartsInstance.transportationFuelLine)
 
 // WASTE MANAGEMENT
 router.post("/waste-solid/line", chartsInstance.solidWasteLine);
