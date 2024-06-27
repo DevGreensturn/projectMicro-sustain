@@ -1573,14 +1573,154 @@ const liquidWasteLine = async (req, res) => {
   }
 };
 
-const soldiWastDivertedLine = async (req, res) => {
-  let { projectId, packageId, interval } = req.body;
+const wastDivertedLine = async (req, res) => {
+  let { projectId, interval, unit, packageId } = req.body;
+  
   try {
+    let matchQuery ={}
+     matchQuery = {
+      projectId: new ObjectId(projectId),
+    };
+    if (packageId) {
+      matchQuery.packageId = new ObjectId(packageId);
+    }
+    // Build the match query based on projectId and packageId
+    // let matchQuery = { projectId: projectId, packageId: packageId };
+    let groupId;
+
+    // Determine the grouping ID based on the interval
+    switch (interval) {
+      case "monthly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        };
+        break;
+      case "quarterly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          quarter: {
+            $ceil: { $divide: [{ $month: "$createdAt" }, 3] },
+          },
+        };
+        break;
+      case "yearly":
+        groupId = { year: { $year: "$createdAt" } };
+        break;
+      default:
+        return res.status(400).send({ status: false, message: "Invalid interval specified" });
+    }
+
+    // Define the unit conversion factor based on the unit
+    const unitConversionFactor = (unit) => {
+      switch (unit) {
+        case "tonnes":
+          return 1;
+        case "kg":
+          return 1000;
+        case "lbs":
+          return 2204.62;
+        default:
+          return 1; // Default to tonnes if unit is not specified
+      }
+    };
+
+    // Define the aggregation pipeline
+    const conversionPipeline = (consumptionField) => [
+      { $match: matchQuery },
+      {
+        $project: {
+          createdAt: 1,
+          wasteType: 1,
+          divertedOperationType: 1,
+          quantityInDesiredUnit: {
+            $divide: [
+              {
+                $switch: {
+                  branches: [
+                    {
+                      case: { $eq: ["$unit", "tonnes"] },
+                      then: `$${consumptionField}`,
+                    },
+                    {
+                      case: { $eq: ["$unit", "kg"] },
+                      then: { $divide: [`$${consumptionField}`, 1000] },
+                    },
+                    {
+                      case: { $eq: ["$unit", "lbs"] },
+                      then: { $divide: [`$${consumptionField}`, 2204.62] },
+                    },
+                    {
+                      case: { $eq: ["$unit", null] },
+                      then: `$${consumptionField}`,
+                    }, // Default to tonnes if unit is missing
+                  ],
+                  default: 0,
+                },
+              },
+              unitConversionFactor(unit),
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { groupId, divertedOperationType: "$divertedOperationType" },
+          totalQuantity: { $sum: "$quantityInDesiredUnit" },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.groupId",
+          results: {
+            $push: {
+              divertedOperationType: "$_id.divertedOperationType",
+              totalQuantity: "$totalQuantity",
+            },
+          },
+          totalGroupQuantity: { $sum: "$totalQuantity" },
+        },
+      },
+      {
+        $unwind: "$results",
+      },
+      {
+        $project: {
+          _id: 0, // Hide the default _id field
+          result: "$_id",
+          divertedOperationType: "$results.divertedOperationType",
+          totalQuantity: "$results.totalQuantity",
+          percentage: {
+            $multiply: [
+              { $divide: ["$results.totalQuantity", "$totalGroupQuantity"] },
+              100,
+            ],
+          },
+        },
+      },
+      {
+        $sort: { "result.year": 1, "result.month": 1, "result.quarter": 1 },
+      },
+    ];
+
+    // Run the aggregation pipeline
+    const liquidDiverted = await divertedModel.aggregate(conversionPipeline("quantity"));
+
+    // Send the response
+    const totalDivertedLIne = liquidDiverted.length > 0 ? liquidDiverted : [];
+    return res.status(200).send({
+      status: true,
+      message: "Diverted chart",
+      totalDivertedLIne,
+    });
   } catch (error) {
     console.error(error);
-    return res.status(500).sent({ error: error.message, status: false });
+    return res.status(500).send({ error: error.message, status: false });
   }
 };
+
+
+
 
 const solidWasteDirectedLine = async (req, res) => {
   let { projectId, packageId, interval } = req.body;
@@ -1683,7 +1823,7 @@ module.exports = {
   materialPurchasedTypeLine,
   solidWasteLine,
   liquidWasteLine,
-  soldiWastDivertedLine,
+  wastDivertedLine,
   solidWasteDirectedLine,
   transportationFuelLine,
 };
