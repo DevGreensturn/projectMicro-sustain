@@ -765,7 +765,7 @@ const buildingMaterialPieConsumption = async (req, res) => {
       },
       {
         $group: {
-          _id: "$materialSource",
+          _id: "$materialType",
           count: { $sum: 1 },
         },
       },
@@ -2199,6 +2199,80 @@ const totalWasteLineChart = async (req, res) => {
   }
 };
 
+const buildingMaterialTypePie = async (req, res) => {
+  let { dateRange, projectId, packageId } = req.body;
+
+  try {
+    const timestampsDate = new Date(dateRange);
+    const month = timestampsDate.getMonth() + 1;
+    const year = timestampsDate.getFullYear();
+    console.log(month, year);
+    let projectIdd = new ObjectId(projectId);
+    let packageIdd = new ObjectId(packageId);
+
+    let query = { projectId: projectIdd, packageId: packageIdd };
+    if (month && year) {
+      query.$expr = {
+        $and: [
+          { $eq: [{ $month: "$createdAt" }, month] },
+          { $eq: [{ $year: "$createdAt" }, year] },
+        ],
+      };
+    } else if (year) {
+      query.$expr = {
+        $eq: [{ $year: "$createdAt" }, year],
+      };
+    } else if (month) {
+      query.$expr = {
+        $eq: [{ $month: "$createdAt" }, month],
+      };
+    }
+
+    const pipeline = [
+      {
+        $match: query,
+      },
+      {
+        $group: {
+          _id: "$materialType",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalDocuments: { $sum: "$count" },
+          details: { $push: { materialType: "$_id", count: "$count" } },
+        },
+      },
+      {
+        $unwind: "$details",
+      },
+      {
+        $project: {
+          materialType: "$details.materialType",
+          percentage: {
+            $multiply: [
+              { $divide: ["$details.count", "$totalDocuments"] },
+              100,
+            ],
+          },
+        },
+      },
+    ];
+    const result = await buildingModel.aggregate(pipeline);
+
+    return res.status(200).send({
+      status: true,
+      message: "Building Material Consumption by Type",
+      result: result,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
 
 
 
@@ -2225,5 +2299,6 @@ module.exports = {
   transportationFuelLine,
   concreteLineChart,
   totalWastePie,
-  totalWasteLineChart
+  totalWasteLineChart,
+  buildingMaterialTypePie
 };
