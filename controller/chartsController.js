@@ -1898,6 +1898,222 @@ const transportationFuelLine = async (req, res) => {
   }
 };
 
+const concreteLineChart = async (req, res) => {
+  let { projectId, interval, unit, packageId } = req.body;
+  
+  try {
+    let matchQuery = {
+      projectId: new ObjectId(projectId),
+    };
+    if (packageId) {
+      matchQuery.packageId = new ObjectId(packageId);
+    }
+
+    let groupId;
+
+    switch (interval) {
+      case "monthly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        };
+        break;
+      case "quarterly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          quarter: {
+            $ceil: { $divide: [{ $month: "$createdAt" }, 3] },
+          },
+        };
+        break;
+      case "yearly":
+        groupId = { year: { $year: "$createdAt" } };
+        break;
+      default:
+        return res.status(400).send({ status: false, message: "Invalid interval specified" });
+    }
+
+    const unitConversionFactor = (unit) => {
+      switch (unit) {
+        case "cubic meter":
+          return 1;
+        case "cubic feet":
+          return 1000;
+        case "cubic yards":
+          return 2204.62;
+        default:
+          return 1;
+      }
+    };
+
+    const conversionPipeline = () => [
+      { $match: matchQuery },
+      {
+        $project: {
+          createdAt: 1,
+          wasteType: 1,
+          type: 1,
+          quantityInDesiredUnit: {
+            $divide: [
+              {
+                $switch: {
+                  branches: [
+                    {
+                      case: { $eq: ["$unit", "cubic meter"] },
+                      then: "$quantity", // Assuming quantity field is present
+                    },
+                    {
+                      case: { $eq: ["$unit", "cubic feet"] },
+                      then: { $divide: ["$quantity", 1000] },
+                    },
+                    {
+                      case: { $eq: ["$unit", "cubic yards"] },
+                      then: { $divide: ["$quantity", 2204.62] },
+                    },
+                    {
+                      case: { $eq: ["$unit", null] },
+                      then: "$quantity",
+                    },
+                  ],
+                  default: 0,
+                },
+              },
+              unitConversionFactor(unit),
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { groupId, type: "$type" },
+          totalQuantity: { $sum: "$quantityInDesiredUnit" },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.groupId",
+          results: {
+            $push: {
+              type: "$_id.type",
+              totalQuantity: "$totalQuantity",
+            },
+          },
+          totalGroupQuantity: { $sum: "$totalQuantity" },
+        },
+      },
+      {
+        $unwind: "$results",
+      },
+      {
+        $project: {
+          _id: 0,
+          result: "$_id",
+          type: "$results.type",
+          totalQuantity: "$results.totalQuantity",
+          percentage: {
+            $multiply: [
+              { $divide: ["$results.totalQuantity", "$totalGroupQuantity"] },
+              100,
+            ],
+          },
+        },
+      },
+      {
+        $sort: { "result.year": 1, "result.month": 1, "result.quarter": 1 },
+      },
+    ];
+
+    const totalConcrete = await concreteMixModel.aggregate(conversionPipeline());
+
+    const totalConcretePercentage = totalConcrete.length > 0 ? totalConcrete : [];
+    return res.status(200).send({
+      status: true,
+      message: "Diverted chart",
+      totalConcretePercentage,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
+const totalWastePie = async (req, res) => {
+  let { dateRange, projectId, packageId } = req.body;
+  try {
+    const timestampsDate = new Date(dateRange);
+    const month = timestampsDate.getMonth() + 1;
+    const year = timestampsDate.getFullYear();
+    console.log(month, year);
+    
+    let query = { projectId: new ObjectId(projectId) };
+
+    if (packageId) {
+      query.packageId = new ObjectId(packageId);
+    }
+
+    if (month && year) {
+      query = {
+        ...query,
+        $expr: {
+          $and: [
+            { $eq: [{ $month: "$createdAt" }, month] },
+            { $eq: [{ $year: "$createdAt" }, year] },
+          ],
+        },
+      };
+    } else if (year) {
+      query = {
+        ...query,
+        $expr: {
+          $and: [{ $eq: [{ $year: "$createdAt" }, year] }],
+        },
+      };
+    } else if (month) {
+      query = {
+        ...query,
+        $expr: {
+          $and: [{ $eq: [{ $month: "$createdAt" }, month] }],
+        },
+      };
+    }
+
+    const conversionPipeline = () => [
+      { $match: query },
+      {
+        $group: {
+          _id: null,
+          totalConsumption: { $sum: "$quantity" },
+        },
+      },
+    ];
+
+    const [divertedData, directedData] = await Promise.all([
+      divertedModel.aggregate(conversionPipeline()),
+      disposaleModel.aggregate(conversionPipeline()),
+    ]);
+
+    const totalDiverted = divertedData[0]?.totalConsumption || 0;
+    const totalDirected = directedData[0]?.totalConsumption || 0;
+
+    const totalWaste = totalDiverted + totalDirected;
+
+    const divertedPercentage = totalWaste > 0 ? (totalDiverted / totalWaste) * 100 : 0;
+    const directedPercentage = totalWaste > 0 ? (totalDirected / totalWaste) * 100 : 0;
+
+    return res.status(200).send({
+      status: true,
+      message: "Total waste",
+      divertedPercentage,
+      directedPercentage,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
+
+
 module.exports = {
   energyPieConsumption,
   energyLineConsumption,
@@ -1918,4 +2134,6 @@ module.exports = {
   wastDivertedLine,
   solidWasteDirectedLine,
   transportationFuelLine,
+  concreteLineChart,
+  totalWastePie
 };

@@ -36,6 +36,10 @@ const workerTransportationSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
+  supportingDocuments: [{
+    type: String,
+    required:false
+  }],
   safeDelete:{
     type: Boolean,
     default:false

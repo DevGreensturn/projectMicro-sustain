@@ -27,5 +27,7 @@ router.post("/waste-solid/line", chartsInstance.solidWasteLine);
 router.post("/waste-liquid/line",chartsInstance.liquidWasteLine);
 router.post("/waste-directed/line", chartsInstance.solidWasteDirectedLine)
 router.post("/waste-diverted/line", chartsInstance.wastDivertedLine)
+router.post("/concrete/line", chartsInstance.concreteLineChart);
+router.post("/total-waste/pie", chartsInstance.totalWastePie)
 
 module.exports = router;
