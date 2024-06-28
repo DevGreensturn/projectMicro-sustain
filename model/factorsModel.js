@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const factorSchema = new mongoose.connect(
+const factorSchema = new mongoose.Schema(
   {
     sourceName: {
       type: String,
@@ -22,3 +22,7 @@ const factorSchema = new mongoose.connect(
   },
   { timestamps: true }
 );
+
+const Factors = mongoose.model('factors', factorSchema);
+
+module.exports = Factors;
