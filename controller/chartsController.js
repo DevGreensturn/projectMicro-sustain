@@ -2111,6 +2111,95 @@ const totalWastePie = async (req, res) => {
     return res.status(500).send({ error: error.message, status: false });
   }
 };
+const totalWasteLineChart = async (req, res) => {
+  let { projectId, interval, packageId } = req.body;
+
+  try {
+    let matchQuery = { projectId: new ObjectId(projectId) };
+    if (packageId) {
+      matchQuery.packageId = new ObjectId(packageId);
+    }
+
+    let groupId;
+
+    switch (interval) {
+      case "monthly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          month: { $month: "$createdAt" },
+        };
+        break;
+      case "quarterly":
+        groupId = {
+          year: { $year: "$createdAt" },
+          quarter: {
+            $ceil: { $divide: [{ $month: "$createdAt" }, 3] },
+          },
+        };
+        break;
+      case "yearly":
+        groupId = { year: { $year: "$createdAt" } };
+        break;
+      default:
+        return res.status(400).send({ status: false, message: "Invalid interval specified" });
+    }
+
+    const conversionPipeline = (model) => [
+      { $match: matchQuery },
+      {
+        $group: {
+          _id: groupId,
+          totalQuantity: { $sum: "$quantity" },
+        },
+      },
+    ];
+
+    const divertedPipeline = divertedModel.aggregate(conversionPipeline(divertedModel));
+    const directedPipeline = disposaleModel.aggregate(conversionPipeline(disposaleModel));
+
+    const [divertedData, directedData] = await Promise.all([divertedPipeline, directedPipeline]);
+
+    const combinedData = {};
+
+    for (const data of divertedData) {
+      const key = JSON.stringify(data._id);
+      if (!combinedData[key]) {
+        combinedData[key] = { _id: data._id, diverted: 0, directed: 0 };
+      }
+      combinedData[key].diverted += data.totalQuantity;
+    }
+
+    for (const data of directedData) {
+      const key = JSON.stringify(data._id);
+      if (!combinedData[key]) {
+        combinedData[key] = { _id: data._id, diverted: 0, directed: 0 };
+      }
+      combinedData[key].directed += data.totalQuantity;
+    }
+
+    const result = Object.values(combinedData).map((entry) => {
+      const total = entry.diverted + entry.directed;
+      return {
+        _id: entry._id,
+        diverted: entry.diverted,
+        directed: entry.directed,
+        divertedPercentage: total > 0 ? (entry.diverted / total) * 100 : 0,
+        directedPercentage: total > 0 ? (entry.directed / total) * 100 : 0,
+      };
+    });
+
+    return res.status(200).send({
+      status: true,
+      message: "Waste line chart",
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
+
 
 
 
@@ -2135,5 +2224,6 @@ module.exports = {
   solidWasteDirectedLine,
   transportationFuelLine,
   concreteLineChart,
-  totalWastePie
+  totalWastePie,
+  totalWasteLineChart
 };
