@@ -27,6 +27,9 @@ const employeeTransportationSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
+  fuelUsed: {
+    type: Number
+  },
   numberOfVehicles: {
     type: Number,
     required: false

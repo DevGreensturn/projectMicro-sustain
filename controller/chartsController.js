@@ -1154,8 +1154,8 @@ const transportationFuelPie = async (req, res) => {
     const month = timestampsDate.getMonth() + 1;
     const year = timestampsDate.getFullYear();
 
-    let projectIdd = new ObjectId(projectId);
-    let packageIdd = new ObjectId(packageId);
+    const projectIdd = new ObjectId(projectId);
+    const packageIdd = new ObjectId(packageId);
 
     let query = { projectId: projectIdd, packageId: packageIdd };
     if (month && year) {
@@ -1175,44 +1175,52 @@ const transportationFuelPie = async (req, res) => {
       };
     }
 
-    const models = [
-      siteModel,
-      buildingModel,
-      concreteMixModel,
-      waterTankerModel,
-      workerTransportationModel,
-      commutingModel,
-      siteModel,
-      businessModel,
+    const modelsData = [
+      { model: siteModel, field: "fuelConsumption" },
+      { model: buildingModel, field: "fuelUsed" },
+      { model: concreteMixModel, field: "fuelUsedPerTruck" },
+      { model: waterTankerModel, field: "fuelUsedByTruck" },
+      { model: workerTransportationModel, field: "fuelConsumption" },
+      { model: commutingModel, field: "fuelUsed" },
+      { model: nonRenewable, field: "fuelUsedByTrucks" }
     ];
 
-    let fuelConsumptionPromises = models.map(async (model) => {
+    const promises = modelsData.map(async ({ model, field }) => {
       const pipeline = [
         { $match: query },
         {
           $group: {
             _id: null,
-            totalFuelUsed: { $sum: "$fuelUsed" },
+            totalFuelUsed: { $sum: `$${field}` },
           },
         },
       ];
 
+      console.log(`Executing pipeline for ${model.collection.name} with query:`, JSON.stringify(pipeline));
+
       const result = await model.aggregate(pipeline);
+      const totalFuelUsed = result.length ? result[0].totalFuelUsed : 0;
+
+      console.log(`Result for ${model.collection.name}:`, result);
+
       return {
         model: model.collection.name,
-        totalFuelUsed: result.length ? result[0].totalFuelUsed : 0,
+        totalFuelUsed,
       };
     });
 
-    let fuelConsumptions = await Promise.all(fuelConsumptionPromises);
-    let totalFuelUsed = fuelConsumptions.reduce(
+    const fuelConsumptions = await Promise.all(promises);
+
+    const totalFuelUsed = fuelConsumptions.reduce(
       (acc, curr) => acc + curr.totalFuelUsed,
       0
     );
 
-    let fuelPercentage = fuelConsumptions.map((fc) => ({
-      model: fc.model,
-      percentage: ((fc.totalFuelUsed / totalFuelUsed) * 100).toFixed(2),
+    const fuelPercentage = fuelConsumptions.map((fc) => ({
+      source_type: fc.model,
+      percentage: totalFuelUsed > 0
+        ? ((fc.totalFuelUsed / totalFuelUsed) * 100).toFixed(2)
+        : 0,
     }));
 
     return res.status(200).send({
@@ -1221,10 +1229,16 @@ const transportationFuelPie = async (req, res) => {
       result: fuelPercentage,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error in transportationFuelPie:", error);
     return res.status(500).send({ error: error.message, status: false });
   }
 };
+
+
+
+
+
+
 
 const fuelConsumptionPie = async (req, res) => {
   let { dateRange, projectId, packageId } = req.body;
