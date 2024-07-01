@@ -1268,53 +1268,107 @@ const fuelConsumptionPie = async (req, res) => {
       };
     }
 
-    const pipeline = [
-      {
-        $match: query,
-      },
-      {
-        $group: {
-          _id: "$equipment",
-          totalFuelUsed: { $sum: "$energyOutput" },
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          totalFuel: { $sum: "$totalFuelUsed" },
-          details: {
-            $push: { equipment: "$_id", totalFuelUsed: "$totalFuelUsed" },
-          },
-        },
-      },
-      {
-        $unwind: "$details",
-      },
-      {
-        $project: {
-          equipment: "$details.equipment",
-          percentage: {
-            $multiply: [
-              { $divide: ["$details.totalFuelUsed", "$totalFuel"] },
-              100,
-            ],
-          },
-        },
-      },
+    const modelsData = [
+      { model: siteModel, field: "fuelConsumption" },
+      { model: buildingModel, field: "fuelUsed" },
+      { model: concreteMixModel, field: "fuelUsedPerTruck" },
+      { model: waterTankerModel, field: "fuelUsedByTruck" },
+      { model: workerTransportationModel, field: "fuelConsumption" },
+      { model: commutingModel, field: "fuelUsed" },
     ];
 
-    const result = await nonRenewable.aggregate(pipeline);
+    // Step 1: Calculate the total transportation fuel used
+    const transportationPromises = modelsData.map(async ({ model, field }) => {
+      const pipeline = [
+        { $match: query },
+        {
+          $group: {
+            _id: null,
+            totalFuelUsed: { $sum: `$${field}` },
+          },
+        },
+      ];
+
+      const result = await model.aggregate(pipeline);
+      const totalFuelUsed = result.length ? result[0].totalFuelUsed : 0;
+
+      return {
+        model: model.collection.name,
+        totalFuelUsed,
+      };
+    });
+
+    const transportationFuelConsumptions = await Promise.all(transportationPromises);
+
+    const totalTransportationFuelUsed = transportationFuelConsumptions.reduce(
+      (acc, curr) => acc + curr.totalFuelUsed,
+      0
+    );
+
+    // Step 2: Get unique equipment types from nonRenewable model and calculate their fuel usage
+    const equipmentTypes = await nonRenewable.distinct("equipment", query);
+
+    const equipmentPromises = equipmentTypes.map(async (type) => {
+      const pipeline = [
+        { $match: { ...query, equipment: type } },
+        {
+          $group: {
+            _id: null,
+            totalFuelUsed: { $sum: "$fuelUsed" },
+          },
+        },
+      ];
+
+      const result = await nonRenewable.aggregate(pipeline);
+      const totalFuelUsedForType = result.length ? result[0].totalFuelUsed : 0;
+
+      return {
+        equipment: type,
+        totalFuelUsed: totalFuelUsedForType,
+      };
+    });
+
+    const equipmentFuelConsumptions = await Promise.all(equipmentPromises);
+
+    // Step 3: Calculate the total fuel used (transportation + equipment types)
+    const totalFuelUsed = totalTransportationFuelUsed + equipmentFuelConsumptions.reduce(
+      (acc, curr) => acc + curr.totalFuelUsed,
+      0
+    );
+
+    // Step 4: Calculate the percentages
+    const transportationPercentage = totalTransportationFuelUsed ? ((totalTransportationFuelUsed / totalFuelUsed) * 100).toFixed(2) : 0;
+    
+    const equipmentPercentages = equipmentFuelConsumptions.reduce((acc, { equipment, totalFuelUsed }) => {
+      const percentage = totalFuelUsed ? ((totalFuelUsed / totalFuelUsed) * 100).toFixed(2) : 0;
+      acc[equipment] = `${percentage}%`;
+      return acc;
+    }, {});
 
     return res.status(200).send({
       status: true,
-      message: "Fuel consumption percentage by equipment type",
-      result: result,
+      message: "Fuel consumption percentage by type",
+      totalFuelUsed,
+      percentages: {
+        Transportation_fuel: `${transportationPercentage}%`,
+        ...equipmentPercentages,
+      },
     });
   } catch (error) {
     console.error(error);
     return res.status(500).send({ error: error.message, status: false });
   }
 };
+
+
+
+
+
+
+
+
+
+
 
 const contrunctionEmissionPie = async (req, res) => {
   let { dateRange, projectId, packageId } = req.body;
